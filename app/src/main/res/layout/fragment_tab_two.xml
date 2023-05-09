@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Fragments.TabTwo">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_viewc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        />
+
+    <EditText
+        android:id="@+id/enter_note"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Enter your task"
+
+        android:textColorHint="@color/white"
+        android:layout_below="@id/recycler_viewc"
+        >
+
+    </EditText>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/BTN_OK"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        app:cornerRadius="20dp"
+        android:text="V"
+        android:backgroundTint="#330768"
+        android:layout_toEndOf="@id/enter_note"
+        android:layout_below="@id/recycler_viewc"
+        android:layout_marginStart="20dp"
+        >
+
+    </com.google.android.material.button.MaterialButton>
+
+</RelativeLayout>
+
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/buttonPlus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="+"
+        android:backgroundTint="@color/white"
+
+        android:src="@drawable/plus1"
+        android:layout_marginStart="300dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="50dp"
+
+        >
+
+    </com.google.android.material.floatingactionbutton.FloatingActionButton>
+</FrameLayout>
