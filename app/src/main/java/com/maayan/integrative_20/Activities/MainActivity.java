@@ -14,8 +14,11 @@ import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.maayan.integrative_20.Adatpters.ViewPagerAdapter;
-import com.maayan.integrative_20.Entities.CalendarEntity;
-import com.maayan.integrative_20.Entities.UserEntity;
+import com.maayan.integrative_20.Boundaries.NewUserBoundary;
+import com.maayan.integrative_20.Boundaries.UserBoundary;
+import com.maayan.integrative_20.Model.CalendarEntity;
+import com.maayan.integrative_20.Model.UserEntity;
+import com.maayan.integrative_20.Model.UserRole;
 import com.maayan.integrative_20.Interfaces.API_Interface;
 import com.maayan.integrative_20.R;
 
@@ -33,7 +36,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class MainActivity extends AppCompatActivity {
-
+    //TODO POST and than GET
    // TextView status;
     TabLayout tabLayout;
     ViewPager2 viewPager2;
@@ -115,8 +118,35 @@ viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
     }
 });
 
-        getUsers();
-        createNewObject();
+        createNewUser();
+       // getUsers();
+      //  createNewObject();
+    }
+
+    private void createNewUser(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://172.20.29.14:8084")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        NewUserBoundary newUser = new NewUserBoundary(UserRole.MINIAPP_USER.toString(), "HI", "AVATAR", "demo@gmail.com");
+        API_Interface api_interface = retrofit.create(API_Interface.class);
+        Call<UserBoundary> user = api_interface.createANewUser(newUser);
+        user.enqueue(new Callback<UserBoundary>() {
+            @Override
+            public void onResponse(Call<UserBoundary> call, Response<UserBoundary> response) {
+                if(response.isSuccessful()){
+                    Log.d("XX1", ""+response.body());
+                }
+                Log.d("XX1", "succeeded reach " + response);
+
+            }
+
+            @Override
+            public void onFailure(Call<UserBoundary> call, Throwable t) {
+
+            }
+        });
     }
 
     private void createNewObject(){
@@ -130,6 +160,7 @@ viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
         API_Interface api_interface = retrofit.create(API_Interface.class);
         Call<ResponseBody> call = api_interface.createAnObject(gson.toJson(calendar));
         call.enqueue(new Callback<ResponseBody>() {
+
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
@@ -151,19 +182,22 @@ viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             public void onFailure(Call<ResponseBody> call, Throwable t) {
 
             }
+
+
         });
     }
 
     private void getUsers() {
+        //172.20.29.14
+        //10.0.0.15
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.0.15:8084")
+                .baseUrl("http://172.20.29.14:8084")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         API_Interface api_interface = retrofit.create(API_Interface.class);
         Call<List<UserEntity>> users = api_interface.getAllUsers();
         users.enqueue(new Callback<List<UserEntity>>() {
-
 
             @Override
             public void onResponse(Call<List<UserEntity>> call, Response<List<UserEntity>> response) {
@@ -173,7 +207,7 @@ viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
                //     status.setText("Code: " + response.code());
                     return;
                 }
-                Log.d("XX1", "weve made it");
+                Log.d("XX1", "we've made it");
                 List<UserEntity> allUsers = response.body();
                 for(UserEntity user : allUsers) {
                     System.out.println("" + user.getUserId());

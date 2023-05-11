@@ -51,6 +51,10 @@ dependencies {
     implementation 'com.github.mahimrocky:WeekDaySelector:1.0.0'
     implementation 'com.github.badoualy:datepicker-timeline:c6dcd05737'
 
+    implementation 'com.github.nikhil-sachdeva:SliderViewLibrary:1.0'
+    implementation 'com.github.ApendIr:slider:1.0'
+
+
 
 
 }

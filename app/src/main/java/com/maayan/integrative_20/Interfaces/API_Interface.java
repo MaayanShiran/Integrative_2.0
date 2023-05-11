@@ -1,7 +1,8 @@
 package com.maayan.integrative_20.Interfaces;
 
-import com.maayan.integrative_20.Entities.CalendarEntity;
-import com.maayan.integrative_20.Entities.UserEntity;
+import com.maayan.integrative_20.Boundaries.NewUserBoundary;
+import com.maayan.integrative_20.Boundaries.UserBoundary;
+import com.maayan.integrative_20.Model.UserEntity;
 
 import java.util.List;
 
@@ -24,4 +25,7 @@ public interface API_Interface {
 
     @POST("/superapp/objects")
     Call<ResponseBody> createAnObject(@Body String requestBody);
+
+    @POST("/superapp/users")
+    Call<UserBoundary> createANewUser(@Body NewUserBoundary newUser);
 }

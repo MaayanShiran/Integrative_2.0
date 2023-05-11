@@ -1,4 +1,4 @@
-package com.maayan.integrative_20.Entities;
+package com.maayan.integrative_20.Model;
 
 import java.util.Arrays;
 
