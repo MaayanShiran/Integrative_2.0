@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Student4U"
+        android:textColor="#726295"
+        android:textSize="60sp"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+
+        >
+    </TextView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sign Up"
+        android:textColor="#726295"
+        android:textSize="25sp"
+        android:layout_gravity="start"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        >
+    </TextView>
+
+
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        >
+
+        <ImageView
+            android:layout_width="350dp"
+            android:layout_height="470dp"
+            android:background="@drawable/curved_login_back"
+            >
+
+
+        </ImageView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="50dp"
+            android:text="Username:"
+            android:textColor="@color/white"
+            android:textSize="25sp">
+
+        </TextView>
+
+        <EditText
+            android:id="@+id/TXT_username"
+            android:layout_width="300dp"
+            android:layout_height="45dp"
+            android:text=""
+            android:textSize="24sp"
+            android:background="#6FFFFFFF"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="85dp"/>
+
+        <EditText
+            android:id="@+id/TXT_email"
+            android:layout_width="300dp"
+            android:layout_height="45dp"
+            android:text=""
+            android:textSize="24sp"
+            android:background="#6FFFFFFF"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="185dp"/>
+
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="250dp"
+    android:layout_marginStart="25dp"
+    android:text="Please choose an avatar:"
+    android:textColor="@color/white"
+    >
+
+</TextView>
+       <ir.apend.slider.ui.Slider
+           android:id="@+id/img_slider"
+           android:layout_marginTop="275dp"
+           android:layout_width="200dp"
+           android:layout_height="100dp"
+           android:layout_gravity="center_horizontal"
+           app:animateIndicators="true"
+           app:defaultIndicators="circle"
+           app:intervalSecond="5"
+           app:loopSlides="true"
+           >
+
+       </ir.apend.slider.ui.Slider>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="150dp"
+                android:text="Email:"
+                android:textColor="@color/white"
+                android:textSize="25sp">
+
+            </TextView>
+
+
+        <Button
+            android:id="@+id/BTN_signup"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="170dp"
+            android:text="Sign Up"
+            >
+
+        </Button>
+
+    </FrameLayout>
+
+
+</LinearLayout>
