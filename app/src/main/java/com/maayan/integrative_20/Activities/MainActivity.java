@@ -118,7 +118,7 @@ viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
     }
 });
 
-        createNewUser();
+        //createNewUser();
        // getUsers();
       //  createNewObject();
     }
@@ -196,30 +196,22 @@ viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
                 .build();
 
         API_Interface api_interface = retrofit.create(API_Interface.class);
-        Call<List<UserEntity>> users = api_interface.getAllUsers();
-        users.enqueue(new Callback<List<UserEntity>>() {
-
+        Call<UserBoundary[]> users = api_interface.getAllUsers();
+        users.enqueue(new Callback<UserBoundary[]>() {
             @Override
-            public void onResponse(Call<List<UserEntity>> call, Response<List<UserEntity>> response) {
-                if (!response.isSuccessful()){
-                    System.out.println("Code: " + response.code());
-                    Log.d("XX1", "Code: " + response.code());
-               //     status.setText("Code: " + response.code());
-                    return;
-                }
-                Log.d("XX1", "we've made it");
-                List<UserEntity> allUsers = response.body();
-                for(UserEntity user : allUsers) {
-                    System.out.println("" + user.getUserId());
-                    Log.d("XX1", "" + user.toString());
-                 //   status.setText("success");
+            public void onResponse(Call<UserBoundary[]> call, Response<UserBoundary[]> response) {
+                Log.d("XX1", "success" + users.toString());
+                UserBoundary[] allUsers = response.body();
+                Log.d("XX1", "********");
+                for (UserBoundary user : allUsers) {
+                    Log.d("XX1", "" + user.getUserId());
+
                 }
             }
 
             @Override
-            public void onFailure(Call<List<UserEntity>> call, Throwable t) {
-                Log.d("XX1", "oh no " + t.getMessage());
-          //      status.setText("oh no " + t.getMessage());
+            public void onFailure(Call<UserBoundary[]> call, Throwable t) {
+                Log.d("XX1", "oh no" + t.getMessage());
             }
         });
     }

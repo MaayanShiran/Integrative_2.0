@@ -9,9 +9,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Student4U"
+        android:text="𝐒𝐭𝐮𝐝𝐞𝐧𝐭𝟒𝐔🌈™"
         android:textColor="#726295"
-        android:textSize="60sp"
+        android:textSize="40sp"
         android:gravity="center_horizontal"
         android:layout_marginTop="30dp"
 
@@ -60,6 +60,7 @@
         </TextView>
 
         <EditText
+            android:id="@+id/TXT_username"
             android:layout_width="300dp"
             android:layout_height="45dp"
             android:text=""
@@ -80,6 +81,7 @@
 
         </TextView>
         <EditText
+            android:id="@+id/TXT_email"
             android:layout_width="300dp"
             android:layout_height="45dp"
             android:text=""
@@ -89,6 +91,7 @@
             android:layout_marginTop="185dp"/>
 
         <Button
+            android:id="@+id/BTN_login"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
@@ -101,6 +104,7 @@
     </FrameLayout>
 
         <TextView
+            android:id="@+id/LBL_dont_have_account"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:text="Don't have an account yet?"

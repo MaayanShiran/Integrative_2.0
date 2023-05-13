@@ -2,6 +2,7 @@ package com.maayan.integrative_20.Activities;
 
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -81,14 +82,22 @@ public class SignUpActivity extends AppCompatActivity {
 
         imgSlider.addSlides(slideList);
 
-        String username = enterUsername.getText().toString();
-        String avatar = slideList.get(avatarPos).getImageUrl();
-        String email = enterEmail.getText().toString();
+
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String username = enterUsername.getText().toString();
+                String avatar = slideList.get(avatarPos).getImageUrl();
+                String email = enterEmail.getText().toString();
                 createNewUser(username, avatar, email);
+                Intent newIntent = new Intent(SignUpActivity.this, MainActivity.class);
+
+// Start the new Intent
+                startActivity(newIntent);
+
+// Close the current Activity
+                finish();
             }
         });
 
@@ -113,9 +122,11 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void createNewUser(String username, String avatar, String email){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://172.16.7.254:8084")
+                .baseUrl("http://192.168.43.111:8084")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+
+        Log.d("XX1", "params: "+ username+ " "+avatar+ " " + email);
 
         NewUserBoundary newUser = new NewUserBoundary(UserRole.MINIAPP_USER.toString(), username, avatar, email);
         API_Interface api_interface = retrofit.create(API_Interface.class);
