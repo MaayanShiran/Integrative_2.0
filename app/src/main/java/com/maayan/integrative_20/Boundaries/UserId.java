@@ -2,7 +2,7 @@ package com.maayan.integrative_20.Boundaries;
 
 public class UserId {
 
-    private String superapp;
+    private String springApplicationName;
     private String email;
 
     public UserId() {
@@ -13,11 +13,11 @@ public class UserId {
     }
 
     public String getSuperapp() {
-        return superapp;
+        return springApplicationName;
     }
 
     public void setSuperapp(String superapp) {
-        this.superapp = superapp;
+        this.springApplicationName = superapp;
     }
 
     public String getEmail() {
@@ -31,7 +31,7 @@ public class UserId {
     @Override
     public String toString() {
         return "UserId{" +
-                "superapp='" + superapp + '\'' +
+                "superapp='" + springApplicationName + '\'' +
                 ", email='" + email + '\'' +
                 '}';
     }

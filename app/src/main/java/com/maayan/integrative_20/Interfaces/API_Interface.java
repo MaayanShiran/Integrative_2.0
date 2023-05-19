@@ -1,12 +1,9 @@
 package com.maayan.integrative_20.Interfaces;
 
 import com.maayan.integrative_20.Boundaries.NewUserBoundary;
+import com.maayan.integrative_20.Boundaries.ObjectBoundary;
 import com.maayan.integrative_20.Boundaries.UserBoundary;
-import com.maayan.integrative_20.Model.UserEntity;
 
-import java.util.List;
-
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -25,17 +22,30 @@ public interface API_Interface {
     @GET("/superapp/admin/users")//
     Call<UserBoundary[]> getAllUsers();
 
+
+
     @POST("/superapp/objects")
-    Call<ResponseBody> createAnObject(@Body String requestBody);
+    Call<ObjectBoundary> createAnObject(@Body Object objectBoundary);
+
+    @PUT("/superapp/objects/{superapp}/{internalObjectId}")
+    Call<Void> updateAnObject(@Path("superapp") String superapp, @Path("internalObjectId") String objectId, @Body ObjectBoundary objectBoundary);
+
+    @GET("/superapp/objects{superapp}/{internalObjectId}")
+    Call<ObjectBoundary> retrieveObject(@Path("superapp") String superapp, @Path("internalObjectId") String objectId);
+
+    @GET("/superapp/objects")
+    Call<ObjectBoundary[]> getAllObjects();
 
 
 
-    @POST("/superapp/users")//
+    @POST("/superapp/users")//working
     Call<UserBoundary> createANewUser(@Body NewUserBoundary newUser);
 
-    @GET("/superapp/users/login/{superapp}/{email}")//
+    @GET("/superapp/users/login/{superapp}/{email}")//working
     Call<UserBoundary> loginValidUserAndRetrieveUserDetails(@Path("superapp") String superapp, @Path("email") String email);
 
-    @PUT("/superapp/users/{superapp}/{userEmail}")
-    void updateUserDetails(@Path("superapp") String superapp, @Path("userEmail") String email);
+    @PUT("/superapp/users/{superapp}/{userEmail}")//working
+    Call<Void> updateUserDetails(@Path("superapp") String superapp, @Path("userEmail") String email, @Body UserBoundary userBoundary);
+
+
 }

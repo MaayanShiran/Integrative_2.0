@@ -11,13 +11,10 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.maayan.integrative_20.Boundaries.UserBoundary;
+import com.maayan.integrative_20.Boundaries.UserId;
 import com.maayan.integrative_20.Interfaces.API_Interface;
-import com.maayan.integrative_20.Model.CalendarEntity;
-import com.maayan.integrative_20.Model.UserEntity;
+import com.maayan.integrative_20.Model.UserRole;
 import com.maayan.integrative_20.R;
-
-import java.io.IOException;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,7 +45,9 @@ public class LoginActivity  extends AppCompatActivity {
             public void onClick(View v) {
                 String username = getUsername.getText().toString();
                 String email = getEmail.getText().toString();
-                getUsers("2023b.Liran.Sorokin-Student4U", email);
+                //getUsers("2023b.Liran.Sorokin-Student4U", email);
+                //only test
+                changeUserDetails("2023b.Liran.Sorokin-Student4U", email);
             }
         });
 
@@ -68,9 +67,35 @@ public class LoginActivity  extends AppCompatActivity {
 
     }
 
+    private void changeUserDetails(String superapp, String email) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://10.0.0.22:8084")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        API_Interface api_interface = retrofit.create(API_Interface.class);
+     //   private UserId userId;
+     //   private String role;
+     //   private String username;
+     //   private String avatar;
+        UserBoundary updatedUser = new UserBoundary(new UserId("maayan@gmail.com"), UserRole.SUPERAPP_USER.toString(), "NEWNAME", "PIC123");
+        Call <Void> call =  api_interface.updateUserDetails(superapp, email, updatedUser);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Log.d("XX1", "we are here " + response.body());
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.d("XX1", "oh man " + t.getMessage());
+            }
+        });
+    }
+
     private void getUsers(String superapp, String email) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.43.111:8084")
+                .baseUrl("http://172.20.25.249:8084")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -83,7 +108,7 @@ public class LoginActivity  extends AppCompatActivity {
                     // object created successfully
                     Log.d("XX1", "Object created successfully: " + response.message());
                     UserBoundary user = response.body();
-                    Log.d("XX1", user.getAvatar());
+                    Log.d("XX1", response.body().toString());
                 } else {
                     // error creating object
                     Log.d("XX1", "Response code: " + response.code());

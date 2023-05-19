@@ -16,8 +16,7 @@ import com.google.gson.Gson;
 import com.maayan.integrative_20.Adatpters.ViewPagerAdapter;
 import com.maayan.integrative_20.Boundaries.NewUserBoundary;
 import com.maayan.integrative_20.Boundaries.UserBoundary;
-import com.maayan.integrative_20.Model.CalendarEntity;
-import com.maayan.integrative_20.Model.UserEntity;
+import com.maayan.integrative_20.Model.CalendarBoundary;
 import com.maayan.integrative_20.Model.UserRole;
 import com.maayan.integrative_20.Interfaces.API_Interface;
 import com.maayan.integrative_20.R;
@@ -25,7 +24,6 @@ import com.maayan.integrative_20.R;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -119,13 +117,15 @@ viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
 });
 
         //createNewUser();
-       // getUsers();
+        //getUsers();
       //  createNewObject();
+        //172.20.27.45 AFEKA
+        //10.0.0.22 HOME
     }
 
     private void createNewUser(){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://172.20.29.14:8084")
+                .baseUrl("http://172.20.27.45:8084")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -149,13 +149,14 @@ viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
         });
     }
 
+ /*
     private void createNewObject(){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://10.0.0.15:8084")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        CalendarEntity calendar = new CalendarEntity("12345", null);
+        CalendarBoundary calendar = new CalendarBoundary("12345", null);
 
         API_Interface api_interface = retrofit.create(API_Interface.class);
         Call<ResponseBody> call = api_interface.createAnObject(gson.toJson(calendar));
@@ -166,7 +167,7 @@ viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
                 if (response.isSuccessful()) {
                     try {
                         String json = response.body().string();
-                        CalendarEntity calendar = gson.fromJson(json, CalendarEntity.class);
+                        CalendarBoundary calendar = gson.fromJson(json, CalendarBoundary.class);
                         // object created successfully
                         Log.d("XX1", "Object created successfully: " + calendar.toString());
                     } catch (IOException e) {
@@ -186,12 +187,13 @@ viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
 
         });
     }
+  */
 
     private void getUsers() {
         //172.20.29.14
         //10.0.0.15
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://172.20.29.14:8084")
+                .baseUrl("http://172.20.27.45:8084")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
