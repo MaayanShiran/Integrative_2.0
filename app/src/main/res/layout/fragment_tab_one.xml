@@ -7,6 +7,98 @@
     xmlns:agendaCalendar="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragments.TabOne">
 
+    <ImageView
+        android:id="@+id/IMG_popup"
+        android:layout_gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/colorAccent"
+        >
+    </ImageView>
+
+    <TextView
+        android:id="@+id/TXT_popup_subject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="Subject"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_marginStart="170dp"
+        android:layout_marginBottom="50dp"
+        android:textSize="20sp"
+        >
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/TXT_popup_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="10dp"
+        android:text="Content"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_marginStart="170dp"
+        android:textSize="20sp"
+        >
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/TXT_popup_participants"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="Participants"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_marginStart="170dp"
+        android:layout_marginTop="30dp"
+        android:textSize="20sp"
+        >
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/TXT_popup_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="Time"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_marginStart="170dp"
+        android:layout_marginTop="70dp"
+        android:textSize="20sp"
+        >
+
+    </TextView>
+
+    <Button
+        android:id="@+id/BTN_close_popup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="70dp"
+        android:layout_gravity="center_vertical"
+        >
+
+    </Button>
+
+    <ImageView
+        android:id="@+id/blurred_back"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/blurr"
+        android:visibility="invisible"
+        android:scaleType="centerCrop"
+        android:alpha="0.8"
+        >
+
+    </ImageView>
 
     <ListView
         android:id="@+id/day_hours"

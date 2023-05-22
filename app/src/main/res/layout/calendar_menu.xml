@@ -73,7 +73,6 @@
 
     <com.github.badoualy.datepicker.DatePickerTimeline
         android:id="@+id/date_picker_scroll"
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

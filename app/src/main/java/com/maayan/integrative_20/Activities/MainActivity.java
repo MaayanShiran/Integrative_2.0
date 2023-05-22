@@ -10,19 +10,24 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.github.badoualy.datepicker.DatePickerTimeline;
+import com.github.badoualy.datepicker.MonthView;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.maayan.integrative_20.Adatpters.ViewPagerAdapter;
 import com.maayan.integrative_20.Boundaries.NewUserBoundary;
 import com.maayan.integrative_20.Boundaries.UserBoundary;
+import com.maayan.integrative_20.Fragments.TabOne;
 import com.maayan.integrative_20.Model.CalendarBoundary;
+import com.maayan.integrative_20.Model.Event;
 import com.maayan.integrative_20.Model.UserRole;
 import com.maayan.integrative_20.Interfaces.API_Interface;
 import com.maayan.integrative_20.R;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import okhttp3.ResponseBody;
@@ -34,7 +39,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class MainActivity extends AppCompatActivity {
-    //TODO POST and than GET
    // TextView status;
     TabLayout tabLayout;
     ViewPager2 viewPager2;
@@ -64,7 +68,27 @@ public class MainActivity extends AppCompatActivity {
         viewPager2 = findViewById(R.id.viewpager);
         viewPagerAdapter = new ViewPagerAdapter(this);
         viewPager2.setAdapter(viewPagerAdapter);
+
         frameLayout = findViewById(R.id.framelayout);
+
+        datePickerTimeline.setOnDateSelectedListener(new DatePickerTimeline.OnDateSelectedListener() {
+            @Override
+            public void onDateSelected(int year, int month, int day, int index) {
+                Log.d("X12", "working?");
+
+                TabOne tabOne = TabOne.newInstance(String.valueOf(day));
+
+            //    tabOne.getAdapter().setUpdatedItem(new ArrayList<>(), );
+
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.framelayout, tabOne) // Replace "R.id.fragment_container" with the ID of the container where the fragment is placed
+                        .commit();
+
+
+              //  tabOne.updateHourList(String.valueOf(day));
+
+            }
+        });
 
         calendar = Calendar.getInstance();
         dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -78,12 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 viewPager2.setCurrentItem(tab.getPosition());
                 if(tab.getPosition() == 0){
                     datePickerTimeline.setVisibility(View.VISIBLE);
-                    datePickerTimeline.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
 
-                        }
-                    });
                 }
                 else{
                     datePickerTimeline.setVisibility(View.GONE);
