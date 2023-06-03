@@ -46,7 +46,7 @@ public interface API_Interface {
 
     //
     @PUT("/superapp/objects/{superapp}/{internalObjectId}/children")
-    Call<Void> BindAnExistingObjectToExistingChildObject(@Path("superapp") String superapp, @Path("internalObjectId") String internalObjectId, @Query("userSuperapp") String userSuperapp, @Query("email") String email, @Body SuperAppObjectIdBoundary superAppObjectIdBoundary);
+    Call<Void> BindAnExistingObjectToExistingChildObject(@Path("superapp") String superapp, @Path("internalObjectId") String internalObjectId, @Body SuperAppObjectIdBoundary superAppObjectIdBoundary, @Query("userSuperapp") String userSuperapp, @Query("userEmail") String userEmail);
 
     //
     @GET("/superapp/objects/{superapp}/{internalObjectId}/children")

@@ -32,6 +32,7 @@ import com.maayan.integrative_20.Model.Location;
 import com.maayan.integrative_20.Model.ObjectId;
 import com.maayan.integrative_20.Model.UserRole;
 import com.maayan.integrative_20.R;
+import com.maayan.integrative_20.SuperAppObjectIdBoundary;
 import com.maayan.integrative_20.Utils.RetrofitClient;
 
 import java.io.IOException;
@@ -220,17 +221,20 @@ public class SignUpActivity extends AppCompatActivity {
        */
         currentUser = CurrentUser.getInstance();
         SuperAppObjectBoundary event = new SuperAppObjectBoundary(new ObjectId("superm", "internal: 5"), "EVENT", "event", true, new Location(12.5, 14.5), new CreatedBy(new UserId("ab@gmail.com")), null);
-        UserId[] particiants = new UserId[]{new UserId("maayanShiran@gmail.com"), new UserId("Johnny@gmail.com")};
+        String[] particiants = new String[]{"now1913@gmail.com", "now1915@gmail.com"};
         UserId[] particiants2 = new UserId[]{new UserId("hana@gmail.com")};
-        EventBoundary[] eventDetails = new EventBoundary[]{new EventBoundary("1234", "subject121", "start", "end", particiants, EventType.BIRTHDAY), new EventBoundary("1997", "subject2", "start2", "end2", particiants2, EventType.HOLIDAY)};
-        Map<String, Object> details = new HashMap<>();
+       // EventBoundary[] eventDetails = new EventBoundary[]{new EventBoundary("1234", "subject121", "start", "end", particiants, EventType.BIRTHDAY), new EventBoundary("1997", "subject2", "start2", "end2", particiants2, EventType.HOLIDAY)};
+        /*
+         Map<String, Object> details = new HashMap<>();
         for (EventBoundary event1 : eventDetails) {
             details.put(event1.getEventId(), event1);
         }
+         */
 
-        EventBoundary eventDetails1 = new EventBoundary("15041997", subject, "13:00", "17:00", particiants, EventType.BIRTHDAY);
+
+       // EventBoundary eventDetails1 = new EventBoundary("15041997", subject, "13:00", "17:00", particiants, EventType.BIRTHDAY);
         Map<String, Object> details133 = new HashMap<>();
-        details133.put(eventDetails1.getEventId(), eventDetails1);
+       // details133.put(eventDetails1.getEventId(), eventDetails1);
 
         Map<String, Object> objectDetails = new HashMap<>();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -271,8 +275,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                 Log.d("XX5", "" + currentUser.getEvents());
                 event12.setObjectId(new ObjectId(SUPERAPPNAME, response.body().getObjectId().getInternalObjectId()));
-                // currentUser.setEvents(response.body().getObjectDetails());
-                // currentUser.setEvents(event);
+                inviteParticipants(response.body());
             }
 
             @Override
@@ -282,6 +285,64 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         return returnOne[0];
+    }
+
+    private void inviteParticipants(SuperAppObjectBoundary event) {
+        if(!(event.getObjectDetails().containsKey("participants") && event.getObjectDetails().get("participants") != null)){
+            return;
+        }
+        ArrayList<String> participants =((ArrayList<String>) event.getObjectDetails().get("participants"));
+    Log.d("XX777", ""+participants);
+    for(String part: participants){
+        CreatedBy createdBy = new CreatedBy(new UserId(part));
+        createdBy.getUserId().setSuperapp(SUPERAPPNAME);
+        Log.d("XX777", ""+part);
+
+        String type = event.getType();
+        String alias = event.getAlias();
+        Location location = event.getLocation();
+       // SuperAppObjectBoundary event12 = new SuperAppObjectBoundary(new ObjectId("hh", "1"), "EVENT", "event", true, new Location(55.0, 60.5), new CreatedBy(currentUser.getUserId()), objectDetails);
+
+        SuperAppObjectBoundary child = new SuperAppObjectBoundary(new ObjectId("bla", "blaaa123"), type, alias, true, location, createdBy, new HashMap<>() );
+        Log.d("XX7772", ""+child);
+        //save child to DB
+        Call<SuperAppObjectBoundary> returnedObjectBoundary = retrofitClient.getApi_interface().createAnObject(child);
+        returnedObjectBoundary.enqueue(new Callback<SuperAppObjectBoundary>() {
+            @Override
+            public void onResponse(Call<SuperAppObjectBoundary> call, Response<SuperAppObjectBoundary> response) {
+                Log.d("XX7778", "this is the code: " + response.code()+ " " + response.message());
+                ObjectId childId = response.body().getObjectId();
+                SuperAppObjectIdBoundary objectIdBoundaryChild = new SuperAppObjectIdBoundary(childId.getSuperapp(), childId.getInternalObjectId());
+                bindObject(event, objectIdBoundaryChild);
+            }
+
+            @Override
+            public void onFailure(Call<SuperAppObjectBoundary> call, Throwable t) {
+
+            }
+        });
+    }
+
+    }
+
+    private void bindObject(SuperAppObjectBoundary event, SuperAppObjectIdBoundary objectIdBoundaryChild) {
+        String superApp = event.getObjectId().getSuperapp();
+        String internalObjId = event.getObjectId().getInternalObjectId();
+        String userEmail = event.getCreatedBy().getUserId().getEmail();
+
+        Call<Void> returnedObjectBoundary = retrofitClient.getApi_interface().BindAnExistingObjectToExistingChildObject(superApp, internalObjId, objectIdBoundaryChild, superApp, userEmail);
+        returnedObjectBoundary.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Log.d("XXX7771", "success");
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
+
     }
 
     private void createNewUser(String username, String avatar, String email) throws IOException {
@@ -334,8 +395,8 @@ public class SignUpActivity extends AppCompatActivity {
                                 Log.d("XX17", "this is the event: " + event);
 //                                retrieveAnEvent(event.getObjectId().getInternalObjectId(),email);
                                 createAnEvent(email, "Important Exam");
-                                getAllEvents(email);
-                                commandSearchByDate();
+                               // getAllEvents(email);
+                               // commandSearchByDate();
 
                                 Intent newIntent = new Intent(SignUpActivity.this, MainActivity.class);
 
@@ -393,7 +454,6 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void commandSearchByDate() {
-        Log.d("MAAYAN1234", "check");
 
         //type: dummyObject
         //type: EVENT
