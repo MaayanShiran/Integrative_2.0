@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:agendaCalendar="http://schemas.android.com/apk/res-auto"
-    tools:context=".Fragments.TabOne">
+    tools:context=".Fragments.TabOne1">
 
     <ImageView
         android:id="@+id/IMG_popup"
@@ -100,15 +100,25 @@
 
     </ImageView>
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/day_hours"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="190dp"
+        android:orientation="vertical"
         >
 
-    </ListView>
+    </androidx.recyclerview.widget.RecyclerView>
 
+    <Button
+        android:id="@+id/BTN_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="O"
 
+        android:layout_gravity="bottom"
+        >
+
+    </Button>
 
 
 </FrameLayout>

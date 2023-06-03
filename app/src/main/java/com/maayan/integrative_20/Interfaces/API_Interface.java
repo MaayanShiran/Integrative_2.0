@@ -1,8 +1,10 @@
 package com.maayan.integrative_20.Interfaces;
 
+import com.maayan.integrative_20.Boundaries.MiniAppCommandBoundary;
 import com.maayan.integrative_20.Boundaries.NewUserBoundary;
-import com.maayan.integrative_20.Boundaries.ObjectBoundary;
+import com.maayan.integrative_20.Boundaries.SuperAppObjectBoundary;
 import com.maayan.integrative_20.Boundaries.UserBoundary;
+import com.maayan.integrative_20.SuperAppObjectIdBoundary;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -10,6 +12,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface API_Interface {
     /*
@@ -25,20 +28,35 @@ public interface API_Interface {
 
 
     @POST("/superapp/objects")
-    Call<ObjectBoundary> createAnObject(@Body Object objectBoundary);
+    Call<SuperAppObjectBoundary> createAnObject(@Body Object objectBoundary);
 
+    //
     @PUT("/superapp/objects/{superapp}/{internalObjectId}")
-    Call<Void> updateAnObject(@Path("superapp") String superapp, @Path("internalObjectId") String objectId, @Body ObjectBoundary objectBoundary);
+    Call<Void> updateAnObject(@Path("superapp") String superapp, @Path("internalObjectId") String objectId, @Query("userSuperapp") String userSuperapp, @Query("email") String email, @Body SuperAppObjectBoundary superAppObjectBoundary);
 
-    @GET("/superapp/objects{superapp}/{internalObjectId}")
-    Call<ObjectBoundary> retrieveObject(@Path("superapp") String superapp, @Path("internalObjectId") String objectId);
-
+//
+    @GET("/superapp/objects/{superapp}/{internalObjectId}")
+    Call<SuperAppObjectBoundary> retrieveObject(@Path("superapp") String superapp, @Path("internalObjectId") String objectId, @Query("userSuperapp") String userSuperapp, @Query("email") String email);
+//
     @GET("/superapp/objects")
-    Call<ObjectBoundary[]> getAllObjects();
+    Call<SuperAppObjectBoundary[]> getAllObjects(@Query("userSuperapp") String userSuperapp, @Query("userEmail") String userEmail, @Query("size") int size, @Query("page") int page);
+
+    @GET("/superapp/objects/search/byType/{type}")
+    Call<SuperAppObjectBoundary[]> searchObjectsByType(@Path("type") String type, @Query("userSuperapp") String userSuperapp, @Query("userEmail") String userEmail, @Query("size") int size, @Query("page") int page);
+
+    //
+    @PUT("/superapp/objects/{superapp}/{internalObjectId}/children")
+    Call<Void> BindAnExistingObjectToExistingChildObject(@Path("superapp") String superapp, @Path("internalObjectId") String internalObjectId, @Query("userSuperapp") String userSuperapp, @Query("email") String email, @Body SuperAppObjectIdBoundary superAppObjectIdBoundary);
+
+    //
+    @GET("/superapp/objects/{superapp}/{internalObjectId}/children")
+    Call<SuperAppObjectBoundary[]> getAllChildrenOfAnExistingObject(@Path("superapp") String superapp, @Path("internalObjectId") String internalObjectId, @Query("userSuperapp") String userSuperapp, @Query("email") String email, @Query("size") int size, @Query("page") int page);
+    //
+    @GET("/superapp/objects/{superapp}/{internalObjectId}/parents")
+    Call<SuperAppObjectBoundary[]> getAnArrayWithObjectParent(@Path("superapp") String superapp, @Path("internalObjectId") String internalObjectId, @Query("userSuperapp") String userSuperapp, @Query("email") String email, @Query("size") int size, @Query("page") int page);
 
 
-
-    @POST("/superapp/users")//working
+    @POST("/superapp/users")
     Call<UserBoundary> createANewUser(@Body NewUserBoundary newUser);
 
     @GET("/superapp/users/login/{superapp}/{email}")//working
@@ -48,4 +66,6 @@ public interface API_Interface {
     Call<Void> updateUserDetails(@Path("superapp") String superapp, @Path("userEmail") String email, @Body UserBoundary userBoundary);
 
 
+    @POST("/superapp/miniapp/{miniAppName}")
+    Call<Object> invokeMiniAppCommand(@Path("miniAppName") String miniAppName, @Body MiniAppCommandBoundary miniAppCommandBoundary, @Query("async") Boolean asyncFlag);
 }

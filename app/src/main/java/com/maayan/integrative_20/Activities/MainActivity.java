@@ -5,13 +5,13 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.github.badoualy.datepicker.DatePickerTimeline;
-import com.github.badoualy.datepicker.MonthView;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
@@ -19,27 +19,29 @@ import com.maayan.integrative_20.Adatpters.ViewPagerAdapter;
 import com.maayan.integrative_20.Boundaries.NewUserBoundary;
 import com.maayan.integrative_20.Boundaries.UserBoundary;
 import com.maayan.integrative_20.Fragments.TabOne;
-import com.maayan.integrative_20.Model.CalendarBoundary;
+import com.maayan.integrative_20.Fragments.TabOne1;
+import com.maayan.integrative_20.Interfaces.DataTransferCallback;
+import com.maayan.integrative_20.Model.CurrentUser;
 import com.maayan.integrative_20.Model.Event;
+import com.maayan.integrative_20.Model.EventType;
 import com.maayan.integrative_20.Model.UserRole;
 import com.maayan.integrative_20.Interfaces.API_Interface;
 import com.maayan.integrative_20.R;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import java.util.concurrent.CountDownLatch;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TabOne1.OnViewCreatedCallback{
    // TextView status;
+   private CountDownLatch latch;
     TabLayout tabLayout;
     ViewPager2 viewPager2;
     ViewPagerAdapter viewPagerAdapter;
@@ -47,12 +49,21 @@ public class MainActivity extends AppCompatActivity {
     TabItem tab1;
     TabItem tab2;
     TextView dateToday;
+    private boolean readyToTransfer = false;
+    private Event currentEvent;
+    DataTransferCallback dataTransferCallback;
+    private CurrentUser currentUser = CurrentUser.getInstance();
+    private Handler handler;
+
+
+
     com.github.badoualy.datepicker.DatePickerTimeline datePickerTimeline;
 
 
     private Calendar calendar;
     private SimpleDateFormat dateFormat;
     private String date;
+    private boolean canDo;
     Gson gson = new Gson();
 
     @SuppressLint("MissingInflatedId")
@@ -71,29 +82,72 @@ public class MainActivity extends AppCompatActivity {
 
         frameLayout = findViewById(R.id.framelayout);
 
+        String [] part = new String[] {"hi", "byeee"};
+        currentEvent = new Event(part, "Sample content", "Sample participants", "Sample time", "HI", "bye", EventType.HOLIDAY, "hi");
+
         datePickerTimeline.setOnDateSelectedListener(new DatePickerTimeline.OnDateSelectedListener() {
             @Override
             public void onDateSelected(int year, int month, int day, int index) {
-                Log.d("X12", "working?");
+                TabOne1 tabOne = TabOne1.newInstance(day, month, year);
 
-                TabOne tabOne = TabOne.newInstance(String.valueOf(day));
-
-            //    tabOne.getAdapter().setUpdatedItem(new ArrayList<>(), );
 
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.framelayout, tabOne) // Replace "R.id.fragment_container" with the ID of the container where the fragment is placed
+                        .replace(R.id.framelayout, tabOne)
                         .commit();
+/*
+     handler = new Handler();
+                if(!readyToTransfer){
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.d("MNBV", "ready to transfer? " + readyToTransfer);
+                            TabOne1 tabOne = TabOne1.newInstance(day, month, year);
+
+                            getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .detach(tabOne)
+                                    .attach(tabOne)
+                                    .commit();
 
 
-              //  tabOne.updateHourList(String.valueOf(day));
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.framelayout, tabOne)
+                                    .commit();
+                            tabOne.replaceList();
+
+
+
+                        }
+                    });
+                }
+                else{
+                    TabOne1 tabOne = TabOne1.newInstance(day, month, year);
+
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .detach(tabOne)
+                            .attach(tabOne)
+                            .commit();
+
+
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.framelayout, tabOne)
+                            .commit();
+
+                    tabOne.replaceList();
+                }
+ */
+
 
             }
         });
+
 
         calendar = Calendar.getInstance();
         dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         date = dateFormat.format(calendar.getTime());
         dateToday.setText(date);
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -235,5 +289,19 @@ viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
                 Log.d("XX1", "oh no" + t.getMessage());
             }
         });
+    }
+
+    public void setOnItemClickListener(DataTransferCallback listener) {
+        this.dataTransferCallback = listener;
+    }
+
+    @Override
+    public void onViewCreatedCompleted() {
+        readyToTransfer = true;
+
+    }
+
+    public interface OnViewCreatedCallback {
+        void onViewCreatedCompleted();
     }
 }

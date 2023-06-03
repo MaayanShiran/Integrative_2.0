@@ -1,7 +1,5 @@
 package com.maayan.integrative_20.Model;
 
-import com.maayan.integrative_20.Boundaries.ObjectBoundary;
-
 import java.util.Arrays;
 
 public class CalendarBoundary {
