@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.maayan.integrative_20.Fragments.TabOne;
 import com.maayan.integrative_20.Interfaces.Callback_Adapter_Fragment;
 import com.maayan.integrative_20.Model.Event;
 import com.maayan.integrative_20.R;
@@ -23,13 +24,40 @@ public class HourListAdapter1 extends RecyclerView.Adapter<HourListAdapter1.MyNe
     Context context;
     ArrayList<Event> eventsList;
     Callback_Adapter_Fragment openPopUp_Callback;
+    private static HourListAdapter1 instance;
+
+
+ @SuppressLint("NotifyDataSetChanged")
+ public static HourListAdapter1 getInstance(Context context, ArrayList<Event> eventsList) {
+        if (instance == null) {
+            instance = new HourListAdapter1(context,eventsList);
+
+        }
+        else{
+            instance.setNewList(eventsList);
+            instance.setNewContext(context);
+        }
+        Log.d("XX271", "this is the count of items111: " + eventsList.size());
+       // this.eventsList = eventsList;
+        return instance;
+
+    }
+
+    private void setNewContext(Context context) {
+     this.context = context;
+    }
+
 
     public HourListAdapter1(Context context, ArrayList<Event> eventsList) {
         this.context = context;
         this.eventsList = eventsList;
         Log.d("XX27", "this is the recieved: " + this.eventsList);
         Log.d("XX27", "this is the count of items: " + this.eventsList.size());
-        notifyDataSetChanged();
+        Log.d("XX27", "this is the count of items: " + getItemCount());
+
+        // notifyDataSetChanged();
+
+
     }
 
     @NonNull
@@ -41,16 +69,18 @@ public class HourListAdapter1 extends RecyclerView.Adapter<HourListAdapter1.MyNe
 
     @Override
     public void onBindViewHolder(@NonNull MyNewViewHolder holder, @SuppressLint("RecyclerView") int position) {
-      Event event = eventsList.get(position);
+     if(this.eventsList.size() != 0){
+         Event event = this.eventsList.get(position);
+         holder.subject.setText(event.getSubject());
+         holder.itemView.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 openPopUp_Callback.openPopUp(position);
 
-        holder.subject.setText(eventsList.get(position).getSubject());
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openPopUp_Callback.openPopUp(position);
+             }
+         });
+     }
 
-            }
-        });
     }
 
     @Override
@@ -64,6 +94,12 @@ public class HourListAdapter1 extends RecyclerView.Adapter<HourListAdapter1.MyNe
 
     public void notifyChange() {
         notifyDataSetChanged();
+    }
+
+    public void setNewList(ArrayList<Event> newList){
+     this.eventsList = newList;
+     notifyDataSetChanged();
+     Log.d("XX277", "size: " + getItemCount());
     }
 
     public static class MyNewViewHolder extends RecyclerView.ViewHolder{

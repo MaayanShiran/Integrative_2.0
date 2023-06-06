@@ -4,14 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Student4U"
+        android:text="𝐒𝐭𝐮𝐝𝐞𝐧𝐭𝟒𝐔🌈™"
         android:textColor="#726295"
-        android:textSize="60sp"
+        android:textSize="40sp"
         android:gravity="center_horizontal"
         android:layout_marginTop="30dp"
 

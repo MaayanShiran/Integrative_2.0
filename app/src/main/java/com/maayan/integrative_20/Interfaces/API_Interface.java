@@ -31,8 +31,8 @@ public interface API_Interface {
     Call<SuperAppObjectBoundary> createAnObject(@Body Object objectBoundary);
 
     //
-    @PUT("/superapp/objects/{superapp}/{internalObjectId}")
-    Call<Void> updateAnObject(@Path("superapp") String superapp, @Path("internalObjectId") String objectId, @Query("userSuperapp") String userSuperapp, @Query("email") String email, @Body SuperAppObjectBoundary superAppObjectBoundary);
+    @PUT("/superapp/objects/{superapp}/{InternalObjectId}")
+    Call<Void> updateAnObject(@Path("superapp") String superapp, @Path("InternalObjectId") String internalObjectId, @Query("userSuperapp") String userSuperapp, @Query("userEmail") String userEmail, @Body SuperAppObjectBoundary updateBoundary);
 
 //
     @GET("/superapp/objects/{superapp}/{internalObjectId}")

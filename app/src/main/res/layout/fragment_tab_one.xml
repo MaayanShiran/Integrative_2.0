@@ -12,9 +12,10 @@
         android:layout_gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:background="@color/colorAccent"
+        android:background="#648582"
         >
     </ImageView>
+
 
     <TextView
         android:id="@+id/TXT_popup_subject"
@@ -76,6 +77,8 @@
 
     </TextView>
 
+
+
     <Button
         android:id="@+id/BTN_close_popup"
         android:layout_width="wrap_content"
@@ -109,16 +112,54 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
+    <ImageView
+        android:id="@+id/IMG_edit"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/pencil"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="60dp"
+        android:layout_marginStart="70dp"
+        >
+
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/IMG_trash"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/trashsymbol"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="60dp"
+        android:layout_marginStart="20dp"
+        >
+
+    </ImageView>
+
     <Button
         android:id="@+id/BTN_refresh"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="O"
-
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:drawableLeft="@drawable/small_refresh"
+        android:scaleType="centerCrop"
         android:layout_gravity="bottom"
         >
 
     </Button>
+
+    <Button
+        android:id="@+id/BTN_add"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:drawableLeft="@drawable/small_plus"
+        android:scaleType="centerCrop"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="70dp"
+        >
+
+    </Button>
+
+
 
 
 </FrameLayout>
