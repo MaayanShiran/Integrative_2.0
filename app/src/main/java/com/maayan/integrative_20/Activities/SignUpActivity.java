@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -235,6 +236,7 @@ public class SignUpActivity extends AppCompatActivity {
                 currentUser.setNewEventObjectID(response.body().getObjectId().getInternalObjectId());
 
                 event12.setObjectId(new ObjectId(SUPERAPPNAME, response.body().getObjectId().getInternalObjectId()));
+                Log.d("XX7771", "HRE");
                 inviteParticipants(response.body());
             }
 
@@ -296,7 +298,7 @@ public class SignUpActivity extends AppCompatActivity {
                         try {
                             if (isTaskExecuted) {
 
-                                createAnEvent1(email, "Maayan's Birthday");
+                                //createAnEvent1(email, "Maayan's Birthday");
                                 createAnEvent1(email, "Important Exam");
                                 getAllEvents1(email);
                                 commandSearchByDate1();

@@ -123,8 +123,8 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, Data
             public void onClick(View v) {
                 ObjectOperations objectOperations = new ObjectOperations();
                 try {
-                    objectOperations.createAnEvent(currentUser.getUserId().getEmail(), "NEW");
-                    objectOperations.commandSearchByDate(currentUser.getDateSelected());
+                    objectOperations.createAnEvent(currentUser.getUserId().getEmail(), "SHOW");
+               //     objectOperations.commandSearchByDate(currentUser.getDateSelected());
 
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -136,6 +136,8 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, Data
             @Override
             public void onClick(View v) {
                 hourList.clear();
+                ObjectOperations objectOperations = new ObjectOperations();
+                objectOperations.commandSearchByDate(currentUser.getDateSelected());
                 hourList.addAll(currentUser.getEvents());
                 adapter.setNewList(currentUser.getEvents());
             }
@@ -204,7 +206,7 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, Data
 
                 ObjectOperations objectOperations = new ObjectOperations();
                 objectOperations.editEvent(hourList.get(position).getInternalObjectId(), updateBoundary);
-                objectOperations.commandSearchByDate(currentUser.getDateSelected());
+               // objectOperations.commandSearchByDate(currentUser.getDateSelected());
 
 
             }
@@ -215,7 +217,7 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, Data
             public void onClick(View v) {
                 ObjectOperations objectOperations = new ObjectOperations();
                 objectOperations.commandDeleteEvent(hourList.get(position).getInternalObjectId());
-                objectOperations.commandSearchByDate(currentUser.getDateSelected());
+                //objectOperations.commandSearchByDate(currentUser.getDateSelected());
             }
         });
 

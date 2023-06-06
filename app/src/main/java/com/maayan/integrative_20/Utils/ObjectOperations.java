@@ -3,6 +3,9 @@ package com.maayan.integrative_20.Utils;
 import static com.maayan.integrative_20.Utils.CONSTANTS.SUPERAPPNAME;
 
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.google.gson.Gson;
 import com.maayan.integrative_20.Boundaries.CommandId;
 import com.maayan.integrative_20.Boundaries.InvokedBy;
@@ -19,11 +22,13 @@ import com.maayan.integrative_20.Model.Location;
 import com.maayan.integrative_20.Model.ObjectId;
 import com.maayan.integrative_20.Model.UserRole;
 import com.maayan.integrative_20.SuperAppObjectIdBoundary;
+
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,7 +47,7 @@ public class ObjectOperations {
     public SuperAppObjectBoundary createAnEvent(String email, String subject) throws ParseException {
 
         Log.d("VV22", "enter here with " + subject);
-        String[] particiants = new String[]{"now0835@gmail.com"};//MUST BE IN DB FIRST
+        String[] particiants = new String[]{"dummy@gmail.com"};//MUST BE IN DB FIRST
         Map<String, Object> objectDetails = new HashMap<>();
         objectDetails.put("date", "15.4.2023");
         objectDetails.put("subject", subject);
@@ -58,14 +63,9 @@ public class ObjectOperations {
         final SuperAppObjectBoundary[] returnOne = new SuperAppObjectBoundary[1];
 
         //change to SUPERAPP USER - to create object BOUNDARY
-        UserBoundary updatedUser = new UserBoundary();
-        updatedUser.setUserId(currentUser.getUserId());
-        updatedUser.setUsername(currentUser.getChosenUsername());
-        updatedUser.setAvatar(currentUser.getChosenAvatar());
-        updatedUser.setRole(UserRole.SUPERAPP_USER.toString());
-        currentUser.setChosenRole(UserRole.SUPERAPP_USER.toString());
+        UserBoundary updatedUser = changeUserRole(UserRole.SUPERAPP_USER);
 
-        Call <Void> callback =  retrofitClient.getApi_interface().updateUserDetails(currentUser.getUserId().getSuperapp(), currentUser.getUserId().getEmail(), updatedUser);
+        Call<Void> callback = retrofitClient.getApi_interface().updateUserDetails(currentUser.getUserId().getSuperapp(), currentUser.getUserId().getEmail(), updatedUser);
         callback.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -73,6 +73,7 @@ public class ObjectOperations {
                 returnedObjectBoundary.enqueue(new Callback<SuperAppObjectBoundary>() {
                     @Override
                     public void onResponse(Call<SuperAppObjectBoundary> call, Response<SuperAppObjectBoundary> response) {
+                        Log.d("YYY", "res: " + response.code() + " " + response.body());
                         updateEventWithnewInternal(response.body());
                     }
 
@@ -129,7 +130,7 @@ public class ObjectOperations {
     }
 
     private void updateEventWithnewInternal(SuperAppObjectBoundary event12) {
-        Log.d("MAAYAN123711", ""+event12);
+        Log.d("MAAYAN123711", "" + event12);
 
         Map<String, Object> objectDetails = new HashMap<>();
         objectDetails.put("date", event12.getObjectDetails().get("date"));
@@ -141,14 +142,28 @@ public class ObjectOperations {
         objectDetails.put("internalObjectId", event12.getObjectId().getInternalObjectId());
         objectDetails.put("content", "check");
         event12.setObjectDetails(objectDetails);
-      //  currentUser.setNewEventDetails(event12.getObjectId().toString(), event12);
-      //  Log.d("MAAYAN12371", "NOW users events: "+ currentUser.getEvents());
-
-        Call<Void> updateitem = retrofitClient.getApi_interface().updateAnObject(SUPERAPPNAME, event12.getObjectId().getInternalObjectId(), SUPERAPPNAME, currentUser.getUserId().getEmail(), event12);
-        updateitem.enqueue(new Callback<Void>() {
+        //  currentUser.setNewEventDetails(event12.getObjectId().toString(), event12);
+        Log.d("MAAYAN12371", "NOW users events: " + currentUser.getChosenRole());
+        UserBoundary updatedUser = changeUserRole(UserRole.SUPERAPP_USER);
+        Call<Void> callback = retrofitClient.getApi_interface().updateUserDetails(currentUser.getUserId().getSuperapp(), currentUser.getUserId().getEmail(), updatedUser);
+        callback.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                Log.d("MAAYAN123712", ""+response.code()+ " !!! " + response.body());
+                Log.d("YYY1", "event: "+event12);
+                Call<Void> updateitem = retrofitClient.getApi_interface().updateAnObject(SUPERAPPNAME, event12.getObjectId().getInternalObjectId(), SUPERAPPNAME, currentUser.getUserId().getEmail(), event12);
+                updateitem.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        Log.d("MAAYAN123712", "" + response.code() + " !!! " + currentUser.getChosenRole());
+                        inviteParticipants(event12);
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+
+                    }
+                });
             }
 
             @Override
@@ -156,6 +171,7 @@ public class ObjectOperations {
 
             }
         });
+
     }
 
     public void getAllEvents(String email) {
@@ -165,7 +181,7 @@ public class ObjectOperations {
             @Override
             public void onResponse(Call<SuperAppObjectBoundary[]> call, Response<SuperAppObjectBoundary[]> response) {
                 Log.d("XX2!", "" + response.body());
-               // currentUser.setEvents(toArray());
+                // currentUser.setEvents(toArray());
 
             }
 
@@ -180,6 +196,7 @@ public class ObjectOperations {
         String superApp = event.getObjectId().getSuperapp();
         String internalObjId = event.getObjectId().getInternalObjectId();
         String userEmail = event.getCreatedBy().getUserId().getEmail();
+        Log.d("XXX7771", "IN bindobject");
 
         Call<Void> returnedObjectBoundary = retrofitClient.getApi_interface().BindAnExistingObjectToExistingChildObject(superApp, internalObjId, objectIdBoundaryChild, superApp, userEmail);
         returnedObjectBoundary.enqueue(new Callback<Void>() {
@@ -199,16 +216,16 @@ public class ObjectOperations {
         if (!(event.getObjectDetails().containsKey("participants") && event.getObjectDetails().get("participants") != null)) {
             return;
         }
-        Log.d("XX7771", "" + event.getObjectDetails().get("participants"));
+        Log.d("XX7771", "BLA" + event.getObjectDetails().get("participants"));
 
         ArrayList<String> participants = (ArrayList<String>) event.getObjectDetails().get("participants");
-       // String trimmedString = participants.substring(1, participants.length() - 1);
-       // String[] array = trimmedString.split(", ");
+        // String trimmedString = participants.substring(1, participants.length() - 1);
+        // String[] array = trimmedString.split(", ");
 
 // Trim any extra whitespace from each email address
-       // for (int i = 0; i < array.length; i++) {
-         //   array[i] = array[i].trim();
-       // }
+        // for (int i = 0; i < array.length; i++) {
+        //   array[i] = array[i].trim();
+        // }
 
         //Log.d("XX777", "" + array);
         for (String part : participants) {
@@ -261,49 +278,50 @@ public class ObjectOperations {
     }
 
 
-        public void commandSearchByDate(String date) {
-Log.d("D23X", "date: " + date);
+    public void commandSearchByDate(String date) {
+        Log.d("D23X", "date: " + date);
 
         //type: dummyObject
         //type: EVENT
+        Log.d("MNK", ""+currentUser.getChosenRole());
         Call<SuperAppObjectBoundary[]> serverObjects = retrofitClient.getApi_interface().searchObjectsByType("dummyObject", currentUser.getUserId().getSuperapp(), currentUser.getUserId().getEmail(), 20, 0);
         serverObjects.enqueue(new Callback<SuperAppObjectBoundary[]>() {
             @Override
             public void onResponse(Call<SuperAppObjectBoundary[]> call, Response<SuperAppObjectBoundary[]> response) {
-                Log.d("MAAYAN123", "WUT" +response.body() + " " + response.code());
+                Log.d("MAAYAN123", "WUT" + response.body() + " " + response.code());
                 assert response.body() != null;
                 HashMap<String, Object> attributes = new HashMap();
-               // attributes.put("date", "15.04.2023");
+                // attributes.put("date", "15.04.2023");
                 attributes.put("date", date);
                 Log.d("MAAYAN888", attributes.toString());
 
-                UserBoundary updatedUser = new UserBoundary();
-                updatedUser.setUserId(currentUser.getUserId());
-                updatedUser.setUsername(currentUser.getChosenUsername());
-                updatedUser.setAvatar(currentUser.getChosenAvatar());
-                updatedUser.setRole(UserRole.MINIAPP_USER.toString());
-                currentUser.setChosenRole(UserRole.MINIAPP_USER.toString());
-                Call <Void> callback =  retrofitClient.getApi_interface().updateUserDetails(currentUser.getUserId().getSuperapp(), currentUser.getUserId().getEmail(), updatedUser);
+                UserBoundary updatedUser = changeUserRole(UserRole.MINIAPP_USER);
+                Log.d("MAAYAN123773","role: " + updatedUser);
+
+                Call<Void> callback = retrofitClient.getApi_interface().updateUserDetails(currentUser.getUserId().getSuperapp(), currentUser.getUserId().getEmail(), updatedUser);
                 callback.enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response1) {
-                        Log.d("MAAYAN12355", ""+response.body()[0].getObjectId().getSuperapp());
+                        Log.d("MAAYAN123773","role: " + currentUser.getChosenRole());
+
+                        Log.d("MAAYAN12355", "" + response.body()[0].getObjectId().getSuperapp());
                         searchAllByDate = new MiniAppCommandBoundary(new CommandId(response.body()[0].getObjectId().getSuperapp(), "miniAppCalendar", "7"), "Find By Date", new TargetObject(response.body()[0].getObjectId()), new InvokedBy(currentUser.getUserId()), attributes);
-                        Log.d("MAAYAN123", "search by date: "+searchAllByDate + " ");
+                        Log.d("MAAYAN123", "search by date: " + searchAllByDate + " ");
 
                         Call<Object> invokeComman = retrofitClient.getApi_interface().invokeMiniAppCommand(searchAllByDate.getCommandId().getMiniapp(), searchAllByDate, false);
                         invokeComman.enqueue(new Callback<Object>() {
                             @Override
                             public void onResponse(Call<Object> call, Response<Object> response) {
-                                Log.d("MAAYAN1237", ""+response.body());
+                                Log.d("MAAYAN1237", "" + response.body()+ " code: " + response.code());
                                 Gson gson = new Gson();
 
 // The given string containing the events
                                 ArrayList<Event> responseList = (ArrayList<Event>) response.body();
                                 ArrayList<Event> eventList = new ArrayList<>();
-                                List<Map<String, SuperAppObjectBoundary>> objects = (List<Map<String, SuperAppObjectBoundary>>) response.body();; // Replace ... with the provided list
+                                List<Map<String, SuperAppObjectBoundary>> objects = (List<Map<String, SuperAppObjectBoundary>>) response.body();
+                                ; // Replace ... with the provided list
 
-                                for(Map<String,SuperAppObjectBoundary> map: objects){
+                                for (Map<String, SuperAppObjectBoundary> map : objects) {
                                     Map<String, Object> objectDetails = (Map<String, Object>) map.get("objectDetails");
                                     Log.d("MAAYAN1237", "list: " + objectDetails);
                                     String date = (String) objectDetails.get("date");
@@ -313,7 +331,7 @@ Log.d("D23X", "date: " + date);
                                     String type = (String) objectDetails.get("type");
                                     String objectId = (String) objectDetails.get("internalObjectId");
                                     ArrayList<String> participants = (ArrayList<String>) objectDetails.get("participants");
-                                   String content = (String) objectDetails.get("content");
+                                    String content = (String) objectDetails.get("content");
                                     Log.d("MAAYAN12378", "is it: " + objectId);
                                     Event event = new Event(participants.toArray(new String[participants.size()]), subject, content, startTime, endTime, date, EventType.valueOf(type), objectId);
 
@@ -327,23 +345,23 @@ Log.d("D23X", "date: " + date);
                                 //currentUser.setEvents((ArrayList<Event>) response.body());
 //                                ArrayList<Event> objectBoundaries = gson.fromJson((String) response.body(), ArrayList.class);
 
-                              //  List<Event> events = new ArrayList<Event>((Integer) response.body());
-                               // for (Event objectBoundary : objectBoundaries) {
-                                 //   Map<String, Object> objectDetails = objectBoundary.getObjectDetails();
-                                 ///   Log.d("MAMA", ""+objectBoundary);
-                                   // String date = (String) objectDetails.get("date");
-                                    //String subject = (String) objectDetails.get("subject");
-                                    //String startTime = objectDetails.getStartTime();
-                                    //String endTime = objectDetails.getEndTime();
-                                   // EventType type = (EventType) objectDetails.get("type");
-                                    //List<String> participants = objectDetails.getParticipants();
+                                //  List<Event> events = new ArrayList<Event>((Integer) response.body());
+                                // for (Event objectBoundary : objectBoundaries) {
+                                //   Map<String, Object> objectDetails = objectBoundary.getObjectDetails();
+                                ///   Log.d("MAMA", ""+objectBoundary);
+                                // String date = (String) objectDetails.get("date");
+                                //String subject = (String) objectDetails.get("subject");
+                                //String startTime = objectDetails.getStartTime();
+                                //String endTime = objectDetails.getEndTime();
+                                // EventType type = (EventType) objectDetails.get("type");
+                                //List<String> participants = objectDetails.getParticipants();
 
-                                    String[]part = new String[]{};
-                                  ///  Event event = new Event(part,subject,"","","", date, type, "");
-                                   // events.add(event);
+                              //  String[] part = new String[]{};
+                                ///  Event event = new Event(part,subject,"","","", date, type, "");
+                                // events.add(event);
                                 //}
-                             //   currentUser.setEvents(eventList);
-                               // Log.d("MAAYAN1239", "current events: " + events);
+                                //   currentUser.setEvents(eventList);
+                                // Log.d("MAAYAN1239", "current events: " + events);
 
                             }
 
@@ -371,18 +389,24 @@ Log.d("D23X", "date: " + date);
 
     }
 
-    public void editEvent(String objectid, SuperAppObjectBoundary updatedEvent){
-        Log.d("NBNB1", "objID"+ objectid);
-
-        //Change user permission to SUPERAPP USER in order to update object
+    @NonNull
+    private UserBoundary changeUserRole(UserRole miniappUser) {
         UserBoundary updatedUser = new UserBoundary();
         updatedUser.setUserId(currentUser.getUserId());
         updatedUser.setUsername(currentUser.getChosenUsername());
         updatedUser.setAvatar(currentUser.getChosenAvatar());
-        updatedUser.setRole(UserRole.SUPERAPP_USER.toString());
-        currentUser.setChosenRole(UserRole.SUPERAPP_USER.toString());
+        updatedUser.setRole(miniappUser.toString());
+        currentUser.setChosenRole(miniappUser.toString());
+        return updatedUser;
+    }
 
-        Call <Void> callback =  retrofitClient.getApi_interface().updateUserDetails(currentUser.getUserId().getSuperapp(), currentUser.getUserId().getEmail(), updatedUser);
+    public void editEvent(String objectid, SuperAppObjectBoundary updatedEvent) {
+        Log.d("NBNB1", "objID" + objectid);
+
+        //Change user permission to SUPERAPP USER in order to update object
+        UserBoundary updatedUser = changeUserRole(UserRole.SUPERAPP_USER);
+
+        Call<Void> callback = retrofitClient.getApi_interface().updateUserDetails(currentUser.getUserId().getSuperapp(), currentUser.getUserId().getEmail(), updatedUser);
         callback.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -390,7 +414,7 @@ Log.d("D23X", "date: " + date);
                 edit.enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
-                        Log.d("NBNB1", ""+ response.body()+ " " + response.code());//
+                        Log.d("NBNB1", "" + response.body() + " " + response.code());//
 
                     }
 
