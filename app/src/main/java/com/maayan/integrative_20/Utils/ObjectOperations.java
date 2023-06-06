@@ -288,7 +288,7 @@ public class ObjectOperations {
         serverObjects.enqueue(new Callback<SuperAppObjectBoundary[]>() {
             @Override
             public void onResponse(Call<SuperAppObjectBoundary[]> call, Response<SuperAppObjectBoundary[]> response) {
-                Log.d("MAAYAN123", "WUT" + response.body() + " " + response.code());
+                Log.d("MAAYAN123760", "WUT" + response.body() + " " + response.code()+ " " + currentUser.getChosenRole());
                 assert response.body() != null;
                 HashMap<String, Object> attributes = new HashMap();
                 // attributes.put("date", "15.04.2023");
@@ -303,6 +303,7 @@ public class ObjectOperations {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response1) {
                         Log.d("MAAYAN123773","role: " + currentUser.getChosenRole());
+                        Log.d("MAAYAN1235500", "" + currentUser.getChosenRole() + " " + response1.body());
 
                         Log.d("MAAYAN12355", "" + response.body()[0].getObjectId().getSuperapp());
                         searchAllByDate = new MiniAppCommandBoundary(new CommandId(response.body()[0].getObjectId().getSuperapp(), "miniAppCalendar", "7"), "Find By Date", new TargetObject(response.body()[0].getObjectId()), new InvokedBy(currentUser.getUserId()), attributes);
@@ -312,7 +313,7 @@ public class ObjectOperations {
                         invokeComman.enqueue(new Callback<Object>() {
                             @Override
                             public void onResponse(Call<Object> call, Response<Object> response) {
-                                Log.d("MAAYAN1237", "" + response.body()+ " code: " + response.code());
+                                Log.d("MAAYAN1237!", "" + response.body()+ " code: " + response.code());
                                 Gson gson = new Gson();
 
 // The given string containing the events

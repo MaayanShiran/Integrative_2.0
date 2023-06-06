@@ -88,7 +88,7 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, Data
         day_hours.setAdapter(adapter);
         adapter.setOnItemClickListener(this);
 
-        String[] part = new String[]{"Maayanishiran@gmail.com", "Johny12@gmail.com"};
+        //String[] part = new String[]{"Maayanishiran@gmail.com", "Johny12@gmail.com"};
 
         return rootView;
     }
@@ -195,13 +195,16 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, Data
 
                 Map<String, Object> objectDetails = new HashMap<>();
 
-                objectDetails.put("date", "15.04.2023");
-
-                objectDetails.put("subject", "TEST200");
+                objectDetails.put("date", "15.4.2023");
+                objectDetails.put("subject", "CHANGED_EVENT");
+                // put internal
+                objectDetails.put("internalObjectId", hourList.get(position).getInternalObjectId());
                 objectDetails.put("startTime", "13:00");
                 objectDetails.put("endTime", "20:00");
                 objectDetails.put("participants", particiants);
                 objectDetails.put("type", EventType.BIRTHDAY);
+                //add content
+                objectDetails.put("content", hourList.get(position).getContent());
                 SuperAppObjectBoundary updateBoundary = new SuperAppObjectBoundary(new ObjectId("hh", "1"), "EVENT", "event", true, new Location(55.0, 60.5), new CreatedBy(currentUser.getUserId()), objectDetails);
 
                 ObjectOperations objectOperations = new ObjectOperations();
