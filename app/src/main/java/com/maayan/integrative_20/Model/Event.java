@@ -113,6 +113,6 @@ public class Event {
     }
 
     public void setType(String type) {
-        this.type = EventType.valueOf(""+type.toUpperCase());
+        this.type = EventType.valueOf("" + type.toUpperCase());
     }
 }

@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 public class CurrentUser {
 
-    private static CurrentUser instance; // Step 1
+    private static CurrentUser instance;
 
     private String chosenAvatar;
     private String chosenRole;
@@ -15,7 +15,7 @@ public class CurrentUser {
     private UserId userId;
     private ArrayList<Event> events;
     private ArrayList<Event> eventsAfterSearch;
-    private Task [] tasks;
+    private Task[] tasks;
     private String dateSelected;
 
     public static void setInstance(CurrentUser instance) {
@@ -35,9 +35,9 @@ public class CurrentUser {
         this.eventsAfterSearch = new ArrayList<>();
     }
 
-    public static synchronized CurrentUser getInstance() { // Step 3
+    public static synchronized CurrentUser getInstance() {
         if (instance == null) {
-            instance = new CurrentUser(); // Step 4 (lazy initialization)
+            instance = new CurrentUser();
         }
         return instance;
     }
@@ -108,7 +108,7 @@ public class CurrentUser {
         this.tasks = tasks;
     }
 
-    public Event getEventPositionByDate(String date){//
+    public Event getEventPositionByDate(String date) {//
         return null;
     }
 
@@ -127,29 +127,29 @@ public class CurrentUser {
     public void setNewEventDetails(String key, Object value) {
         switch (key) {
             case "subject":
-                events.get(events.size()-1).setSubject(value.toString());
+                events.get(events.size() - 1).setSubject(value.toString());
                 break;
             case "endTime":
-                events.get(events.size()-1).setEndTime(value.toString());
+                events.get(events.size() - 1).setEndTime(value.toString());
                 break;
             case "startTime":
-                events.get(events.size()-1).setStartTime(value.toString());
+                events.get(events.size() - 1).setStartTime(value.toString());
                 break;
             case "type":
-                events.get(events.size()-1).setType(value.toString());
+                events.get(events.size() - 1).setType(value.toString());
                 break;
             case "participants":
-                events.get(events.size()-1).setParticipants(new String[]{value.toString()});
+                events.get(events.size() - 1).setParticipants(new String[]{value.toString()});
                 break;
             case "date":
                 events.add(new Event());
-                events.get(events.size()-1).setDate(value.toString());
+                events.get(events.size() - 1).setDate(value.toString());
                 break;
             case "content":
-                events.get(events.size()-1).setContent(value.toString());
+                events.get(events.size() - 1).setContent(value.toString());
                 break;
             case "objectid":
-                events.get(events.size()-1).setInternalObjectId(value.toString());
+                events.get(events.size() - 1).setInternalObjectId(value.toString());
 
             default:
                 break;
@@ -160,14 +160,14 @@ public class CurrentUser {
     }
 
     public void setNewEventObjectID(String id) {
-        events.get(events.size()-1).setInternalObjectId(id);
+        events.get(events.size() - 1).setInternalObjectId(id);
     }
 
     public void setEventInternalId(String internalObjectId) {
-        events.get(events.size()-1).setInternalObjectId(internalObjectId);
+        events.get(events.size() - 1).setInternalObjectId(internalObjectId);
     }
 
     public Event getLastEvent() {
-        return  events.get(events.size()-1);
+        return events.get(events.size() - 1);
     }
 }

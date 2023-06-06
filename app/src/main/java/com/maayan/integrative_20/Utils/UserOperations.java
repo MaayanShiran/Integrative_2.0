@@ -1,6 +1,5 @@
 package com.maayan.integrative_20.Utils;
 
-import android.util.Log;
 
 import com.maayan.integrative_20.Boundaries.NewUserBoundary;
 import com.maayan.integrative_20.Boundaries.UserBoundary;
@@ -17,19 +16,18 @@ public class UserOperations {
 
     private RetrofitClient retrofitClient;
     private CurrentUser currentUser;
+
     public UserOperations() {
         retrofitClient = new RetrofitClient(CONSTANTS.retroFitIP);
         currentUser = CurrentUser.getInstance();
     }
 
-    public Call<UserBoundary>  createNewUser(String username, String avatar, String email) throws IOException {
+    public Call<UserBoundary> createNewUser(String username, String avatar, String email) throws IOException {
 
         NewUserBoundary newUser = new NewUserBoundary(UserRole.SUPERAPP_USER.toString(), username, avatar, email);
-        Log.d("XX1222", newUser.toString());
         Call<UserBoundary> user = retrofitClient.getApi_interface().createANewUser(newUser);
-        Log.d("XX124", user.request().toString());
 
-    return user;
+        return user;
 
     }
 
@@ -47,7 +45,6 @@ public class UserOperations {
                     currentUser.setChosenAvatar(user.getAvatar());
                     currentUser.setChosenUsername(user.getUsername());
                     currentUser.setChosenRole(user.getRole());
-                    Log.d("XX1Z", response.body().toString());
                 } else {
                     // error creating object
                     if (response.errorBody() != null) {
@@ -57,7 +54,6 @@ public class UserOperations {
 
             @Override
             public void onFailure(Call<UserBoundary> call, Throwable t) {
-                Log.d("XX1", "oh no :( " + t.getMessage());
             }
         });
 

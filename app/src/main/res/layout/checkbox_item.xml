@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:text="hi"
         android:textColor="@color/white"
+        android:textSize="25sp"
         >
 
     </CheckBox>

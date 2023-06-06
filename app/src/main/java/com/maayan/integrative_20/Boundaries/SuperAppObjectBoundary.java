@@ -1,9 +1,6 @@
 package com.maayan.integrative_20.Boundaries;
 
 
-
-import android.util.Log;
-
 import com.maayan.integrative_20.Model.CreatedBy;
 import com.maayan.integrative_20.Model.Location;
 import com.maayan.integrative_20.Model.ObjectId;
@@ -39,7 +36,6 @@ public class SuperAppObjectBoundary {
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));//was UTC
         Date date = new Date();
         creationTimestamp = dateFormat.format(date);
-        Log.d("XX1", "time: " + creationTimestamp);
         this.location = location;
         this.createdBy = createdBy;
         this.objectDetails = objectDetails;
@@ -96,9 +92,11 @@ public class SuperAppObjectBoundary {
     public Map<String, Object> getObjectDetails() {
         return objectDetails;
     }
+
     public void setObjectDetails(Map<String, Object> objectDetails) {
         this.objectDetails = objectDetails;
     }
+
     @Override
     public String toString() {
         return "ObjectBoundary [objectId=" + objectId + ", type=" + type + ", alias=" + alias + ", active=" + active

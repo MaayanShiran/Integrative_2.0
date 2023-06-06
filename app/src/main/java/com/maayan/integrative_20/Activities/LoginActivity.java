@@ -9,19 +9,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.maayan.integrative_20.Boundaries.UserBoundary;
-import com.maayan.integrative_20.Boundaries.UserId;
-import com.maayan.integrative_20.Interfaces.API_Interface;
-import com.maayan.integrative_20.Model.UserRole;
 import com.maayan.integrative_20.R;
 import com.maayan.integrative_20.Utils.CONSTANTS;
 import com.maayan.integrative_20.Utils.UserOperations;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -72,60 +63,11 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void changeUserDetails(String superapp, String email) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.0.22:8084")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        API_Interface api_interface = retrofit.create(API_Interface.class);
-
-        UserBoundary updatedUser = new UserBoundary(new UserId("maayan@gmail.com"), UserRole.SUPERAPP_USER.toString(), "NEWNAME", "PIC123");
-        Call<Void> call = api_interface.updateUserDetails(superapp, email, updatedUser);
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-            }
-        });
-    }
-
 
     private void getUser1(String superapp, String email) {
         UserOperations userOperations = new UserOperations();
         userOperations.getUser(superapp, email);
     }
 
-
-    private void getUser(String superapp, String email) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://172.20.25.249:8084")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        API_Interface api_interface = retrofit.create(API_Interface.class);
-        Call<UserBoundary> currentUser = api_interface.loginValidUserAndRetrieveUserDetails(superapp, email);
-        currentUser.enqueue(new Callback<UserBoundary>() {
-            @Override
-            public void onResponse(Call<UserBoundary> call, Response<UserBoundary> response) {
-                if (response.isSuccessful()) {
-                    // object created successfully
-                    UserBoundary user = response.body();
-                } else {
-                    // error creating object
-                    if (response.errorBody() != null) {
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserBoundary> call, Throwable t) {
-            }
-        });
-
-    }
 
 }

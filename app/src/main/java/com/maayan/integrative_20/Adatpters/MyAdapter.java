@@ -21,11 +21,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     Context context;
     ArrayList<String> notes;
-    int counter = 0;
 
-    public MyAdapter(Context context, ArrayList<String> notes){
-    this.context = context;
-    this.notes = notes;
+    public MyAdapter(Context context, ArrayList<String> notes) {
+        this.context = context;
+        this.notes = notes;
 
     }
 
@@ -39,7 +38,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
-    //assigned values for each row based on its position
+        //assigned values for each row based on its position
 
         holder.checkBox.setText(notes.get(position));
 
@@ -53,29 +52,28 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
         });
 
-   holder.checkBox.setOnClickListener(new View.OnClickListener() {
-       @Override
-       public void onClick(View v) {
-           if(holder.checkBox != null){
+        holder.checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.checkBox != null) {
 
 
-               String text = holder.checkBox.getText().toString();
-               SpannableString spannableString = new SpannableString(text);
-               if (holder.checkBox.isChecked()) {
-                   spannableString.setSpan(new StrikethroughSpan(), 0, text.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-               } else {
-                   // To remove the strikethrough, simply remove the span
-                   StrikethroughSpan[] spans = spannableString.getSpans(0, text.length(), StrikethroughSpan.class);
-                   for (StrikethroughSpan span : spans) {
-                       spannableString.removeSpan(span);
-                   }
-               }
-               holder.checkBox.setText(spannableString);
+                    String text = holder.checkBox.getText().toString();
+                    SpannableString spannableString = new SpannableString(text);
+                    if (holder.checkBox.isChecked()) {
+                        spannableString.setSpan(new StrikethroughSpan(), 0, text.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                    } else {
+                        StrikethroughSpan[] spans = spannableString.getSpans(0, text.length(), StrikethroughSpan.class);
+                        for (StrikethroughSpan span : spans) {
+                            spannableString.removeSpan(span);
+                        }
+                    }
+                    holder.checkBox.setText(spannableString);
 
 
-           }
-       }
-   });
+                }
+            }
+        });
 
 
     }
@@ -86,7 +84,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         return notes.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         CheckBox checkBox;
         //all the thing one row is composed of

@@ -1,4 +1,4 @@
-package com.maayan.integrative_20;
+package com.maayan.integrative_20.Boundaries;
 
 public class SuperAppObjectIdBoundary {
 

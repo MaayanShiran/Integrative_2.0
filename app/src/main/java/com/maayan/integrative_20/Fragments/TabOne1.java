@@ -24,7 +24,6 @@ import com.maayan.integrative_20.Activities.MainActivity;
 import com.maayan.integrative_20.Adatpters.HourListAdapter1;
 import com.maayan.integrative_20.Boundaries.SuperAppObjectBoundary;
 import com.maayan.integrative_20.Interfaces.Callback_Adapter_Fragment;
-import com.maayan.integrative_20.Interfaces.DataTransferCallback;
 import com.maayan.integrative_20.Model.CreatedBy;
 import com.maayan.integrative_20.Model.CurrentUser;
 import com.maayan.integrative_20.Model.Event;
@@ -39,7 +38,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, DataTransferCallback {
+public class TabOne1 extends Fragment implements Callback_Adapter_Fragment {
     private LinearLayout userInput;
     private RecyclerView day_hours;
     private Spinner spinner;
@@ -60,11 +59,9 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, Data
     private EditText inputContent;
     private EditText inputStartTime;
     private EditText inputEndTime;
-    private EditText inputType;
     private EditText inputParticipants;
     private ArrayList<Event> hourList;
     private CurrentUser currentUser = CurrentUser.getInstance();
-    Callback_Adapter_Fragment callback_adapter_fragment;
     HourListAdapter1 adapter;
     private View rootView;
     private int selectedYear;
@@ -72,13 +69,8 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, Data
     private int selectedDay;
     private String spinnerVal;
     private boolean canEnter;
-    MainActivity main;
     private OnViewCreatedCallback onViewCreatedCallback;
 
-
-    public void setOnViewCreatedCallback(OnViewCreatedCallback callback) {
-        onViewCreatedCallback = callback;
-    }
 
     public static TabOne1 newInstance(int day, int month, int year) {
         TabOne1 fragment = new TabOne1();
@@ -104,8 +96,6 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, Data
         day_hours.setAdapter(adapter);
         adapter.setOnItemClickListener(this);
 
-        //String[] part = new String[]{"Maayanishiran@gmail.com", "Johny12@gmail.com"};
-
         return rootView;
     }
 
@@ -116,7 +106,6 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, Data
         inputContent = rootView.findViewById(R.id.TXT_enterContent);
         inputStartTime = rootView.findViewById(R.id.TXT_enterStartTime);
         inputEndTime = rootView.findViewById(R.id.TXT_enterEndTime);
-       // inputType = rootView.findViewById(R.id.TXT_enterType);
         inputParticipants = rootView.findViewById(R.id.TXT_enterParticipants);
         submitUserInput = userInput.getRootView().findViewById(R.id.BTN_submit_userInput);
         exitUserInput = userInput.getRootView().findViewById(R.id.BTN_exit_userInput);
@@ -147,9 +136,9 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, Data
 
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getContext(),
                 R.array.planets_array, android.R.layout.simple_spinner_item);
-// Specify the layout to use when the list of choices appears
+        // Specify the layout to use when the list of choices appears
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-// Apply the adapter to the spinner
+        // Apply the adapter to the spinner
         spinner.setAdapter(adapter1);
 
         exitUserInput.setOnClickListener(new View.OnClickListener() {
@@ -165,26 +154,24 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, Data
             @Override
             public void onClick(View v) {
 
-              operateUserInput();
-                    submitUserInput.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ObjectOperations objectOperations = new ObjectOperations();
-                            try {
-                                //get input from user:
-                                objectOperations.createAnEvent(String.valueOf(inputSubjet.getText()), String.valueOf(inputContent.getText()), String.valueOf(inputStartTime.getText()), String.valueOf(inputEndTime.getText()), spinnerVal, new String[]{String.valueOf(inputParticipants.getText())}, currentUser.getDateSelected());
-                                exitUserInput.setVisibility(View.INVISIBLE);
-                                userInput.setVisibility(View.INVISIBLE);
-                                submitUserInput.setVisibility(View.INVISIBLE);
+                operateUserInput();
+                submitUserInput.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ObjectOperations objectOperations = new ObjectOperations();
+                        try {
+                            //get input from user:
+                            objectOperations.createAnEvent(String.valueOf(inputSubjet.getText()), String.valueOf(inputContent.getText()), String.valueOf(inputStartTime.getText()), String.valueOf(inputEndTime.getText()), spinnerVal, new String[]{String.valueOf(inputParticipants.getText())}, currentUser.getDateSelected());
+                            exitUserInput.setVisibility(View.INVISIBLE);
+                            userInput.setVisibility(View.INVISIBLE);
+                            submitUserInput.setVisibility(View.INVISIBLE);
 
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-
+                        } catch (ParseException e) {
+                            e.printStackTrace();
                         }
-                    });
-               //     objectOperations.commandSearchByDate(currentUser.getDateSelected());
 
+                    }
+                });
 
             }
         });
@@ -244,10 +231,6 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, Data
         });
     }
 
-    public HourListAdapter1 getAdapter() {
-        return adapter;
-    }
-
     @Override
     public void openPopUp(int position) {
 
@@ -266,7 +249,7 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, Data
         content.setVisibility(View.VISIBLE);
         content.setText(hourList.get(position).getContent());
         time.setVisibility(View.VISIBLE);
-        time.setText(hourList.get(position).getStartTime()+"-"+hourList.get(position).getEndTime());
+        time.setText(hourList.get(position).getStartTime() + "-" + hourList.get(position).getEndTime());
         participants.setVisibility(View.VISIBLE);
         participants.setText(hourList.get(position).getParticipants());
         subject.bringToFront();
@@ -289,9 +272,6 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, Data
                 submitUserInput.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
-
-                        String[] particiants = new String[]{"TEST1@gmail.com", "TEST2@gmail.com"};
 
                         Map<String, Object> objectDetails = new HashMap<>();
 
@@ -316,9 +296,6 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, Data
                 });
 
 
-               // objectOperations.commandSearchByDate(currentUser.getDateSelected());
-
-
             }
         });
 
@@ -332,18 +309,6 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, Data
         });
 
 
-    }
-
-
-    public void onDateSelected(int day, int month, int year) {
-        this.selectedDay = day;
-        this.selectedMonth = month;
-        this.selectedYear = year;
-    }
-
-    @Override
-    public void onDataTransfer() {
-        //replaceOldListWithNewList();
     }
 
 
@@ -390,18 +355,6 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, Data
                 deleteEvent.setVisibility(View.INVISIBLE);
             }
         });
-
-    }
-
-    public void replaceList() {
-        // clear old list
-        this.hourList.clear();
-
-        // add new list
-        ArrayList<Event> newList = new ArrayList<>();
-        String[] parti = new String[]{"Maayani@gmail.com"};
-        newList.add(new Event(parti, "" + selectedDay + " " + selectedMonth + " " + selectedYear, "hi", "22:00", "23:00", "date", EventType.HOLIDAY, "1"));
-        this.hourList.addAll(newList);
 
     }
 

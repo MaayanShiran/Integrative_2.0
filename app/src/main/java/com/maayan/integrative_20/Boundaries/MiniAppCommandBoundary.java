@@ -2,7 +2,6 @@ package com.maayan.integrative_20.Boundaries;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -34,18 +33,23 @@ public class MiniAppCommandBoundary {
     public CommandId getCommandId() {
         return commandId;
     }
+
     public void setCommandId(CommandId commandId) {
         this.commandId = commandId;
     }
+
     public String getCommand() {
         return command;
     }
+
     public void setCommand(String command) {
         this.command = command;
     }
+
     public TargetObject getTargetObject() {
         return targetObject;
     }
+
     public void setTargetObject(TargetObject targetObject) {
         this.targetObject = targetObject;
     }
@@ -61,12 +65,15 @@ public class MiniAppCommandBoundary {
     public InvokedBy getInvokedBy() {
         return invokedBy;
     }
+
     public void setInvokedBy(InvokedBy invokedBy) {
         this.invokedBy = invokedBy;
     }
+
     public Map<String, Object> getCommandAttributes() {
         return commandAttributes;
     }
+
     public void setCommandAttributes(Map<String, Object> commandAttributes) {
         this.commandAttributes = commandAttributes;
     }
@@ -77,7 +84,6 @@ public class MiniAppCommandBoundary {
                 + targetObject + ", invocationTimestamp=" + invocationTimestamp + ", invokedBy=" + invokedBy
                 + ", commandAttributes=" + commandAttributes + "]";
     }
-
 
 
 }

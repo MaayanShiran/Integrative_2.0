@@ -13,10 +13,8 @@ import android.widget.TextView;
 import com.github.badoualy.datepicker.DatePickerTimeline;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
-import com.google.gson.Gson;
 import com.maayan.integrative_20.Adatpters.ViewPagerAdapter;
 import com.maayan.integrative_20.Fragments.TabOne1;
-import com.maayan.integrative_20.Interfaces.DataTransferCallback;
 import com.maayan.integrative_20.Model.CurrentUser;
 import com.maayan.integrative_20.Model.Event;
 import com.maayan.integrative_20.Model.EventType;
@@ -37,18 +35,14 @@ public class MainActivity extends AppCompatActivity implements TabOne1.OnViewCre
     ImageView exitSymbol;
     private boolean readyToTransfer = false;
     private Event currentEvent;
-    DataTransferCallback dataTransferCallback;
     private CurrentUser currentUser = CurrentUser.getInstance();
 
-
     com.github.badoualy.datepicker.DatePickerTimeline datePickerTimeline;
-
 
     private Calendar calendar;
     private SimpleDateFormat dateFormat;
     private String date;
-    private boolean canDo;
-    Gson gson = new Gson();
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -136,11 +130,6 @@ public class MainActivity extends AppCompatActivity implements TabOne1.OnViewCre
             }
         });
 
-
-    }
-
-    public void setOnItemClickListener(DataTransferCallback listener) {
-        this.dataTransferCallback = listener;
     }
 
     @Override
@@ -149,7 +138,4 @@ public class MainActivity extends AppCompatActivity implements TabOne1.OnViewCre
 
     }
 
-    public interface OnViewCreatedCallback {
-        void onViewCreatedCompleted();
-    }
 }
