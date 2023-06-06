@@ -165,33 +165,7 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, Data
             @Override
             public void onClick(View v) {
 
-                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                                      @Override
-                                                      public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                                          spinnerVal = parent.getItemAtPosition(position).toString();
-
-                                                      }
-
-                                                      @Override
-                                                      public void onNothingSelected(AdapterView<?> parent) {
-
-                                                      }
-                                                  });
-
-                        exitUserInput.bringToFront();
-                userInput.bringToFront();
-                submitUserInput.bringToFront();
-                    exitUserInput.setVisibility(View.VISIBLE);
-                    userInput.setVisibility(View.VISIBLE);
-                    submitUserInput.setVisibility(View.VISIBLE);
-                    exitUserInput.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            exitUserInput.setVisibility(View.INVISIBLE);
-                            userInput.setVisibility(View.INVISIBLE);
-                            submitUserInput.setVisibility(View.INVISIBLE);
-                        }
-                    });
+              operateUserInput();
                     submitUserInput.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -240,6 +214,36 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, Data
         });
     }
 
+    private void operateUserInput() {
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                spinnerVal = parent.getItemAtPosition(position).toString();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        exitUserInput.bringToFront();
+        userInput.bringToFront();
+        submitUserInput.bringToFront();
+        exitUserInput.setVisibility(View.VISIBLE);
+        userInput.setVisibility(View.VISIBLE);
+        submitUserInput.setVisibility(View.VISIBLE);
+        exitUserInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exitUserInput.setVisibility(View.INVISIBLE);
+                userInput.setVisibility(View.INVISIBLE);
+                submitUserInput.setVisibility(View.INVISIBLE);
+            }
+        });
+    }
+
     public HourListAdapter1 getAdapter() {
         return adapter;
     }
@@ -274,24 +278,38 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, Data
             @Override
             public void onClick(View v) {
                 //TODO
-                String[] particiants = new String[]{"TEST1@gmail.com", "TEST2@gmail.com"};
 
-                Map<String, Object> objectDetails = new HashMap<>();
+                operateUserInput();
+                submitUserInput.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-                objectDetails.put("date", "15.4.2023");
-                objectDetails.put("subject", "CHANGED_EVENT");
-                // put internal
-                objectDetails.put("internalObjectId", hourList.get(position).getInternalObjectId());
-                objectDetails.put("startTime", "13:00");
-                objectDetails.put("endTime", "20:00");
-                objectDetails.put("participants", particiants);
-                objectDetails.put("type", EventType.BIRTHDAY);
-                //add content
-                objectDetails.put("content", hourList.get(position).getContent());
-                SuperAppObjectBoundary updateBoundary = new SuperAppObjectBoundary(new ObjectId("hh", "1"), "EVENT", "event", true, new Location(55.0, 60.5), new CreatedBy(currentUser.getUserId()), objectDetails);
 
-                ObjectOperations objectOperations = new ObjectOperations();
-                objectOperations.editEvent(hourList.get(position).getInternalObjectId(), updateBoundary);
+                        String[] particiants = new String[]{"TEST1@gmail.com", "TEST2@gmail.com"};
+
+                        Map<String, Object> objectDetails = new HashMap<>();
+
+                        objectDetails.put("date", currentUser.getDateSelected());
+                        objectDetails.put("subject", String.valueOf(inputSubjet.getText()));
+                        // put internal
+                        objectDetails.put("internalObjectId", hourList.get(position).getInternalObjectId());
+                        objectDetails.put("startTime", String.valueOf(inputStartTime.getText()));
+                        objectDetails.put("endTime", String.valueOf(inputEndTime.getText()));
+                        objectDetails.put("participants", new String[]{String.valueOf(inputParticipants.getText())});
+                        objectDetails.put("type", spinnerVal);
+                        //add content
+                        objectDetails.put("content", String.valueOf(inputContent.getText()));
+                        SuperAppObjectBoundary updateBoundary = new SuperAppObjectBoundary(new ObjectId("hh", "1"), "EVENT", "event", true, new Location(55.0, 60.5), new CreatedBy(currentUser.getUserId()), objectDetails);
+
+                        ObjectOperations objectOperations = new ObjectOperations();
+                        objectOperations.editEvent(hourList.get(position).getInternalObjectId(), updateBoundary);
+                        exitUserInput.setVisibility(View.INVISIBLE);
+                        userInput.setVisibility(View.INVISIBLE);
+                        submitUserInput.setVisibility(View.INVISIBLE);
+                    }
+                });
+
+
                // objectOperations.commandSearchByDate(currentUser.getDateSelected());
 
 
