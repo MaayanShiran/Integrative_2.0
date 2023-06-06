@@ -12,7 +12,7 @@
         android:layout_gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:background="#648582"
+        android:background="#29367E"
         android:visibility="invisible"
         >
     </ImageView>
@@ -134,9 +134,9 @@
         android:text="Subject"
         android:textStyle="bold"
         android:textColor="@color/white"
-        android:layout_marginStart="170dp"
+        android:layout_marginStart="150dp"
         android:layout_marginBottom="50dp"
-        android:textSize="20sp"
+        android:textSize="30sp"
         android:visibility="invisible"
         >
 
@@ -151,7 +151,7 @@
         android:text="Content"
         android:textStyle="bold"
         android:textColor="@color/white"
-        android:layout_marginStart="170dp"
+        android:layout_marginStart="150dp"
         android:textSize="20sp"
         android:visibility="invisible"
         >
@@ -166,7 +166,7 @@
         android:text="Participants"
         android:textStyle="bold"
         android:textColor="@color/white"
-        android:layout_marginStart="170dp"
+        android:layout_marginStart="150dp"
         android:layout_marginTop="30dp"
         android:textSize="20sp"
         android:visibility="invisible"
@@ -182,7 +182,7 @@
         android:text="Time"
         android:textStyle="bold"
         android:textColor="@color/white"
-        android:layout_marginStart="170dp"
+        android:layout_marginStart="150dp"
         android:layout_marginTop="70dp"
         android:textSize="20sp"
         android:visibility="invisible"
@@ -271,7 +271,7 @@
         android:drawableLeft="@drawable/small_plus"
         android:scaleType="centerCrop"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="70dp"
+        android:layout_marginBottom="50dp"
         >
 
     </Button>

@@ -141,7 +141,7 @@ public class ObjectOperations {
         objectDetails.put("participants", event12.getObjectDetails().get("participants"));
         objectDetails.put("type", event12.getObjectDetails().get("type"));
         objectDetails.put("internalObjectId", event12.getObjectId().getInternalObjectId());
-        objectDetails.put("content", "check");
+        objectDetails.put("content", event12.getObjectDetails().get("content"));
         event12.setObjectDetails(objectDetails);
         //  currentUser.setNewEventDetails(event12.getObjectId().toString(), event12);
         Log.d("MAAYAN12371", "NOW users events: " + currentUser.getChosenRole());
@@ -322,32 +322,34 @@ public class ObjectOperations {
                                 ArrayList<Event> eventList = new ArrayList<>();
                                 List<Map<String, SuperAppObjectBoundary>> objects = (List<Map<String, SuperAppObjectBoundary>>) response.body();
                                 ; // Replace ... with the provided list
+if(objects != null){
+    for (Map<String, SuperAppObjectBoundary> map : objects) {
+        Map<String, Object> objectDetails = (Map<String, Object>) map.get("objectDetails");
+        Log.d("MAAYAN1237", "list: " + objectDetails);
+        String date = (String) objectDetails.get("date");
+        String subject = (String) objectDetails.get("subject");
+        String startTime = (String) objectDetails.get("startTime");
+        String endTime = (String) objectDetails.get("endTime");
+        String type = (String) objectDetails.get("type");
+        String objectId = (String) objectDetails.get("internalObjectId");
+        String content = (String) objectDetails.get("content");
 
-                                for (Map<String, SuperAppObjectBoundary> map : objects) {
-                                    Map<String, Object> objectDetails = (Map<String, Object>) map.get("objectDetails");
-                                    Log.d("MAAYAN1237", "list: " + objectDetails);
-                                    String date = (String) objectDetails.get("date");
-                                    String subject = (String) objectDetails.get("subject");
-                                    String startTime = (String) objectDetails.get("startTime");
-                                    String endTime = (String) objectDetails.get("endTime");
-                                    String type = (String) objectDetails.get("type");
-                                    String objectId = (String) objectDetails.get("internalObjectId");
-                                    String content = (String) objectDetails.get("content");
+        if(objectDetails.get("participants").getClass() == ArrayList.class){
+            ArrayList<String> participants = (ArrayList<String>) objectDetails.get("participants");
+            Event event = new Event(participants.toArray(new String[participants.size()]), subject, content, startTime, endTime, date, EventType.valueOf(type), objectId);
+            eventList.add(event);
 
-                                    if(objectDetails.get("participants").getClass() == ArrayList.class){
-                                         ArrayList<String> participants = (ArrayList<String>) objectDetails.get("participants");
-                                        Event event = new Event(participants.toArray(new String[participants.size()]), subject, content, startTime, endTime, date, EventType.valueOf(type), objectId);
-                                        eventList.add(event);
-
-                                    }
-                                    Log.d("MAAYAN12378", "part: " + objectDetails.get("participants").getClass());
+        }
+        Log.d("MAAYAN12378", "part: " + objectDetails.get("participants").getClass());
 
 
 
-                                }
-                                Log.d("MAAYAN123788", "is it: " + eventList);
+    }
+    Log.d("MAAYAN123788", "is it: " + eventList);
 
-                                currentUser.setEvents(eventList);
+    currentUser.setEvents(eventList);
+}
+
                                 //currentUser.setEvents((ArrayList<Event>) response.body());
 //                                ArrayList<Event> objectBoundaries = gson.fromJson((String) response.body(), ArrayList.class);
 

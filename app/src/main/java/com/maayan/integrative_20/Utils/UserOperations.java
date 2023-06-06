@@ -35,20 +35,22 @@ public class UserOperations {
 
     public void getUser(String superapp, String email) {
 
-        Call<UserBoundary> currentUser = retrofitClient.getApi_interface().loginValidUserAndRetrieveUserDetails(superapp, email);
-        currentUser.enqueue(new Callback<UserBoundary>() {
+        Call<UserBoundary> currentUser1 = retrofitClient.getApi_interface().loginValidUserAndRetrieveUserDetails(superapp, email);
+        currentUser1.enqueue(new Callback<UserBoundary>() {
             @Override
             public void onResponse(Call<UserBoundary> call, Response<UserBoundary> response) {
                 if (response.isSuccessful()) {
                     // object created successfully
-                    Log.d("XX1Z", "Object retrieved successfully: " + response.message());
                     UserBoundary user = response.body();
+
+                    currentUser.setUserId(user.getUserId());
+                    currentUser.setChosenAvatar(user.getAvatar());
+                    currentUser.setChosenUsername(user.getUsername());
+                    currentUser.setChosenRole(user.getRole());
                     Log.d("XX1Z", response.body().toString());
                 } else {
                     // error creating object
-                    Log.d("XX1Z", "Response code: " + response.code());
                     if (response.errorBody() != null) {
-                        Log.d("XX1Z", "Error message: " + response.errorBody().toString());
                     }
                 }
             }

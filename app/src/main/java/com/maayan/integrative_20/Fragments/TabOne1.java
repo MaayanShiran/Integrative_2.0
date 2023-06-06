@@ -263,10 +263,16 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, Data
         close_popup.bringToFront();
         subject.setVisibility(View.VISIBLE);
         subject.setText(hourList.get(position).getSubject());
+        content.setVisibility(View.VISIBLE);
+        content.setText(hourList.get(position).getContent());
+        time.setVisibility(View.VISIBLE);
+        time.setText(hourList.get(position).getStartTime()+"-"+hourList.get(position).getEndTime());
         participants.setVisibility(View.VISIBLE);
         participants.setText(hourList.get(position).getParticipants());
         subject.bringToFront();
         participants.bringToFront();
+        time.bringToFront();
+        content.bringToFront();
         editEvent.setImageResource(R.drawable.pencil);
         editEvent.setVisibility(View.VISIBLE);
         editEvent.bringToFront();
@@ -356,9 +362,10 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, Data
             ObjectOperations objectOperations = new ObjectOperations();
             if (selectedDay != 0) {
                 currentUser.setDateSelected("" + selectedDay + "." + selectedMonth + "." + selectedYear);
+                objectOperations.commandSearchByDate("" + selectedDay + "." + selectedMonth + "." + selectedYear);
+
             }
 
-            objectOperations.commandSearchByDate("" + selectedDay + "." + selectedMonth + "." + selectedYear);
 
         }
 
