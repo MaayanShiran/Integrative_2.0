@@ -17,15 +17,27 @@
         >
     </ImageView>
 
-    <ImageView
-        android:id="@+id/IMG_insertOREditEventForm"
-        android:layout_gravity="center_vertical"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:background="#00BCD4"
-        android:layout_marginTop="20dp"
+
+    <Button
+        android:id="@+id/BTN_exit_userInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="20dp"
         >
-    </ImageView>
+
+    </Button>
+
+<LinearLayout
+    android:id="@+id/user_input"
+    android:layout_width="match_parent"
+    android:layout_height="350dp"
+    android:orientation="vertical"
+    android:background="@color/purple_200"
+    android:layout_gravity="center_vertical"
+    >
+
 
 
     <EditText
@@ -35,7 +47,8 @@
         android:layout_gravity="center_vertical"
         android:hint="Enter Event's subject"
         android:layout_marginStart="140dp"
-        android:layout_marginBottom="40dp"
+        android:textColorHint="@android:color/white"
+
         >
 
     </EditText>
@@ -47,8 +60,7 @@
         android:layout_gravity="center_vertical"
         android:hint="Enter Event's content"
         android:layout_marginStart="140dp"
-        android:layout_marginBottom="10dp"
-        android:textColor="@color/white"
+        android:textColorHint="@android:color/white"
         >
 
     </EditText>
@@ -60,8 +72,8 @@
         android:layout_gravity="center_vertical"
         android:hint="Enter Event's start time"
         android:layout_marginStart="140dp"
-        android:textColor="@color/white"
-        android:layout_marginTop="30dp"
+        android:textColorHint="@android:color/white"
+
         >
 
     </EditText>
@@ -73,11 +85,46 @@
         android:layout_gravity="center_vertical"
         android:hint="Enter Event's end time"
         android:layout_marginStart="140dp"
-        android:textColor="@color/white"
-        android:layout_marginTop="70dp"
+        android:textColorHint="@android:color/white"
+
         >
 
     </EditText>
+
+    <Spinner
+        android:id="@+id/dropdown_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+    </Spinner>
+
+
+    <EditText
+        android:id="@+id/TXT_enterParticipants"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:hint="Enter Event's participants"
+        android:layout_marginStart="140dp"
+        android:textColorHint="@android:color/white"
+
+        >
+
+    </EditText>
+
+
+</LinearLayout>
+    <Button
+        android:id="@+id/BTN_submit_userInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SUBMIT"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="300dp"
+        >
+
+    </Button>
 
     <TextView
         android:id="@+id/TXT_popup_subject"
@@ -153,6 +200,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginBottom="70dp"
         android:layout_gravity="center_vertical"
+        android:visibility="invisible"
         >
 
     </Button>

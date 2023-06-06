@@ -44,19 +44,20 @@ public class ObjectOperations {
         currentUser = CurrentUser.getInstance();
     }
 
-    public SuperAppObjectBoundary createAnEvent(String email, String subject) throws ParseException {
+    public SuperAppObjectBoundary createAnEvent(String subject, String content, String startTime, String endTime, String type, String[] participants, String date) throws ParseException {
 
         Log.d("VV22", "enter here with " + subject);
-        String[] particiants = new String[]{"dummy@gmail.com"};//MUST BE IN DB FIRST
+      //  String[] particiants = new String[]{"dummy@gmail.com"};//MUST BE IN DB FIRST
         Map<String, Object> objectDetails = new HashMap<>();
-        objectDetails.put("date", "15.4.2023");
+       // objectDetails.put("date", "15.4.2023");
+        objectDetails.put("date", date);
         objectDetails.put("subject", subject);
-        objectDetails.put("startTime", "13:00");
-        objectDetails.put("endTime", "20:00");
-        objectDetails.put("participants", particiants);
-        objectDetails.put("type", EventType.BIRTHDAY);
+        objectDetails.put("startTime", startTime);
+        objectDetails.put("endTime", endTime);
+        objectDetails.put("participants", participants);//MUST BE IN DB FIRST
+        objectDetails.put("type", type);
         objectDetails.put("internalObjectId", "");
-        objectDetails.put("content", "cont1");
+        objectDetails.put("content", content);
 
         SuperAppObjectBoundary event12 = new SuperAppObjectBoundary(new ObjectId("hh", "1"), "EVENT", "event", true, new Location(55.0, 60.5), new CreatedBy(currentUser.getUserId()), objectDetails);
 
@@ -331,12 +332,16 @@ public class ObjectOperations {
                                     String endTime = (String) objectDetails.get("endTime");
                                     String type = (String) objectDetails.get("type");
                                     String objectId = (String) objectDetails.get("internalObjectId");
-                                    ArrayList<String> participants = (ArrayList<String>) objectDetails.get("participants");
                                     String content = (String) objectDetails.get("content");
-                                    Log.d("MAAYAN12378", "is it: " + objectId);
-                                    Event event = new Event(participants.toArray(new String[participants.size()]), subject, content, startTime, endTime, date, EventType.valueOf(type), objectId);
 
-                                    eventList.add(event);
+                                    if(objectDetails.get("participants").getClass() == ArrayList.class){
+                                         ArrayList<String> participants = (ArrayList<String>) objectDetails.get("participants");
+                                        Event event = new Event(participants.toArray(new String[participants.size()]), subject, content, startTime, endTime, date, EventType.valueOf(type), objectId);
+                                        eventList.add(event);
+
+                                    }
+                                    Log.d("MAAYAN12378", "part: " + objectDetails.get("participants").getClass());
+
 
 
                                 }

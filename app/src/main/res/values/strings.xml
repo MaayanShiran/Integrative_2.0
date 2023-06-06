@@ -1,5 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Integrative_2.0</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="planets_array">
+        <item>EXAM</item>
+        <item>BIRTHDAY</item>
+        <item>MEETING</item>
+        <item>HOLIDAY</item>
+        <item>MEMORIAL</item>
+        <item>OTHER</item>
+    </string-array>
 </resources>

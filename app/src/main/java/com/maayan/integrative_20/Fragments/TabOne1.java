@@ -5,8 +5,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,10 +40,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, DataTransferCallback {
+    private LinearLayout userInput;
     private RecyclerView day_hours;
+    private Spinner spinner;
     private Button close_popup;
     private Button refresh;
     private Button addEvent;
+    private Button exitUserInput;
+    private Button submitUserInput;
     private ImageView editEvent;
     private ImageView deleteEvent;
     private ImageView popup_window;
@@ -47,6 +56,12 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, Data
     private TextView content;
     private TextView participants;
     private TextView time;
+    private EditText inputSubjet;
+    private EditText inputContent;
+    private EditText inputStartTime;
+    private EditText inputEndTime;
+    private EditText inputType;
+    private EditText inputParticipants;
     private ArrayList<Event> hourList;
     private CurrentUser currentUser = CurrentUser.getInstance();
     Callback_Adapter_Fragment callback_adapter_fragment;
@@ -55,6 +70,7 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, Data
     private int selectedYear;
     private int selectedMonth;
     private int selectedDay;
+    private String spinnerVal;
     private boolean canEnter;
     MainActivity main;
     private OnViewCreatedCallback onViewCreatedCallback;
@@ -94,7 +110,16 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, Data
     }
 
     private void findViews() {
-
+        userInput = rootView.findViewById(R.id.user_input);
+        spinner = rootView.findViewById(R.id.dropdown_menu);
+        inputSubjet = rootView.findViewById(R.id.TXT_enterSubject);
+        inputContent = rootView.findViewById(R.id.TXT_enterContent);
+        inputStartTime = rootView.findViewById(R.id.TXT_enterStartTime);
+        inputEndTime = rootView.findViewById(R.id.TXT_enterEndTime);
+       // inputType = rootView.findViewById(R.id.TXT_enterType);
+        inputParticipants = rootView.findViewById(R.id.TXT_enterParticipants);
+        submitUserInput = userInput.getRootView().findViewById(R.id.BTN_submit_userInput);
+        exitUserInput = userInput.getRootView().findViewById(R.id.BTN_exit_userInput);
         addEvent = rootView.findViewById(R.id.BTN_add);
         refresh = rootView.findViewById(R.id.BTN_refresh);
         day_hours = rootView.findViewById(R.id.day_hours);
@@ -116,19 +141,77 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment, Data
         time.setVisibility(View.INVISIBLE);
         deleteEvent.setVisibility(View.INVISIBLE);
         editEvent.setVisibility(View.INVISIBLE);
+        userInput.setVisibility(View.INVISIBLE);
+        exitUserInput.setVisibility(View.INVISIBLE);
+        submitUserInput.setVisibility(View.INVISIBLE);
 
+        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getContext(),
+                R.array.planets_array, android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+        spinner.setAdapter(adapter1);
+
+        exitUserInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userInput.setVisibility(View.INVISIBLE);
+                exitUserInput.setVisibility(View.INVISIBLE);
+                submitUserInput.setVisibility(View.INVISIBLE);
+            }
+        });
 
         addEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ObjectOperations objectOperations = new ObjectOperations();
-                try {
-                    objectOperations.createAnEvent(currentUser.getUserId().getEmail(), "SHOW");
+
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                      @Override
+                                                      public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                                          spinnerVal = parent.getItemAtPosition(position).toString();
+
+                                                      }
+
+                                                      @Override
+                                                      public void onNothingSelected(AdapterView<?> parent) {
+
+                                                      }
+                                                  });
+
+                        exitUserInput.bringToFront();
+                userInput.bringToFront();
+                submitUserInput.bringToFront();
+                    exitUserInput.setVisibility(View.VISIBLE);
+                    userInput.setVisibility(View.VISIBLE);
+                    submitUserInput.setVisibility(View.VISIBLE);
+                    exitUserInput.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            exitUserInput.setVisibility(View.INVISIBLE);
+                            userInput.setVisibility(View.INVISIBLE);
+                            submitUserInput.setVisibility(View.INVISIBLE);
+                        }
+                    });
+                    submitUserInput.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ObjectOperations objectOperations = new ObjectOperations();
+                            try {
+                                //get input from user:
+                                objectOperations.createAnEvent(String.valueOf(inputSubjet.getText()), String.valueOf(inputContent.getText()), String.valueOf(inputStartTime.getText()), String.valueOf(inputEndTime.getText()), spinnerVal, new String[]{String.valueOf(inputParticipants.getText())}, currentUser.getDateSelected());
+                                exitUserInput.setVisibility(View.INVISIBLE);
+                                userInput.setVisibility(View.INVISIBLE);
+                                submitUserInput.setVisibility(View.INVISIBLE);
+
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    });
                //     objectOperations.commandSearchByDate(currentUser.getDateSelected());
 
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+
             }
         });
 

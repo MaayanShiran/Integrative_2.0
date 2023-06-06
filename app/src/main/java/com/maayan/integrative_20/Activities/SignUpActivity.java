@@ -197,7 +197,8 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void createAnEvent1(String email, String subject) throws ParseException {
         ObjectOperations objectOperations = new ObjectOperations();
-        objectOperations.createAnEvent(email, subject);
+        String []part = new String[]{"dummy@gmail.com"};
+        objectOperations.createAnEvent(subject, "CONT", "11:00", "20:00", "EXAM", part, "15.4.2023");
     }
 
     private SuperAppObjectBoundary createAnEvent(String email, String subject) throws ParseException {

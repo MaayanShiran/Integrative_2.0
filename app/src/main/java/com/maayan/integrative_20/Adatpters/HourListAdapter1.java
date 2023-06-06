@@ -72,6 +72,7 @@ public class HourListAdapter1 extends RecyclerView.Adapter<HourListAdapter1.MyNe
      if(this.eventsList.size() != 0){
          Event event = this.eventsList.get(position);
          holder.subject.setText(event.getSubject());
+         holder.startTime.setText(event.getStartTime());
          holder.itemView.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
