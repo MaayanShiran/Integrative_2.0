@@ -327,7 +327,6 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment {
             ObjectOperations objectOperations = new ObjectOperations();
             if (selectedDay != 0) {
                 currentUser.setDateSelected("" + selectedDay + "." + selectedMonth + "." + selectedYear);
-                objectOperations.commandSearchByDate("" + selectedDay + "." + selectedMonth + "." + selectedYear);
 
             }
 
