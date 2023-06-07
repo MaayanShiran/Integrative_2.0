@@ -20,14 +20,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.maayan.integrative_20.Activities.MainActivity;
 import com.maayan.integrative_20.Adatpters.HourListAdapter1;
 import com.maayan.integrative_20.Boundaries.SuperAppObjectBoundary;
 import com.maayan.integrative_20.Interfaces.Callback_Adapter_Fragment;
 import com.maayan.integrative_20.Model.CreatedBy;
 import com.maayan.integrative_20.Model.CurrentUser;
 import com.maayan.integrative_20.Model.Event;
-import com.maayan.integrative_20.Model.EventType;
 import com.maayan.integrative_20.Model.Location;
 import com.maayan.integrative_20.Model.ObjectId;
 import com.maayan.integrative_20.R;
@@ -55,7 +53,7 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment {
     private TextView content;
     private TextView participants;
     private TextView time;
-    private EditText inputSubjet;
+    private EditText inputSubject;
     private EditText inputContent;
     private EditText inputStartTime;
     private EditText inputEndTime;
@@ -102,7 +100,7 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment {
     private void findViews() {
         userInput = rootView.findViewById(R.id.user_input);
         spinner = rootView.findViewById(R.id.dropdown_menu);
-        inputSubjet = rootView.findViewById(R.id.TXT_enterSubject);
+        inputSubject = rootView.findViewById(R.id.TXT_enterSubject);
         inputContent = rootView.findViewById(R.id.TXT_enterContent);
         inputStartTime = rootView.findViewById(R.id.TXT_enterStartTime);
         inputEndTime = rootView.findViewById(R.id.TXT_enterEndTime);
@@ -147,6 +145,7 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment {
                 userInput.setVisibility(View.INVISIBLE);
                 exitUserInput.setVisibility(View.INVISIBLE);
                 submitUserInput.setVisibility(View.INVISIBLE);
+
             }
         });
 
@@ -155,16 +154,19 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment {
             public void onClick(View v) {
 
                 operateUserInput();
+                disappearPopup();
                 submitUserInput.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         ObjectOperations objectOperations = new ObjectOperations();
                         try {
                             //get input from user:
-                            objectOperations.createAnEvent(String.valueOf(inputSubjet.getText()), String.valueOf(inputContent.getText()), String.valueOf(inputStartTime.getText()), String.valueOf(inputEndTime.getText()), spinnerVal, new String[]{String.valueOf(inputParticipants.getText())}, currentUser.getDateSelected());
+                            objectOperations.createAnEvent(String.valueOf(inputSubject.getText()), String.valueOf(inputContent.getText()), String.valueOf(inputStartTime.getText()), String.valueOf(inputEndTime.getText()), spinnerVal, new String[]{String.valueOf(inputParticipants.getText())}, currentUser.getDateSelected());
                             exitUserInput.setVisibility(View.INVISIBLE);
                             userInput.setVisibility(View.INVISIBLE);
                             submitUserInput.setVisibility(View.INVISIBLE);
+
+                            clearForm();
 
                         } catch (ParseException e) {
                             e.printStackTrace();
@@ -199,6 +201,26 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment {
                 blurred_back.setVisibility(View.INVISIBLE);
             }
         });
+    }
+
+    private void disappearPopup() {
+        close_popup.setVisibility(View.INVISIBLE);
+        popup_window.setVisibility(View.INVISIBLE);
+        subject.setVisibility(View.INVISIBLE);
+        content.setVisibility(View.INVISIBLE);
+        participants.setVisibility(View.INVISIBLE);
+        time.setVisibility(View.INVISIBLE);
+        blurred_back.setVisibility(View.INVISIBLE);
+        deleteEvent.setVisibility(View.INVISIBLE);
+        editEvent.setVisibility(View.INVISIBLE);
+    }
+
+    private void clearForm() {
+        inputSubject.setText("");
+        inputParticipants.setText("");
+        inputEndTime.setText("");
+        inputStartTime.setText("");
+        inputContent.setText("");
     }
 
     private void operateUserInput() {
@@ -269,6 +291,7 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment {
                 //TODO
 
                 operateUserInput();
+                disappearPopup();
                 submitUserInput.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -276,7 +299,7 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment {
                         Map<String, Object> objectDetails = new HashMap<>();
 
                         objectDetails.put("date", currentUser.getDateSelected());
-                        objectDetails.put("subject", String.valueOf(inputSubjet.getText()));
+                        objectDetails.put("subject", String.valueOf(inputSubject.getText()));
                         // put internal
                         objectDetails.put("internalObjectId", hourList.get(position).getInternalObjectId());
                         objectDetails.put("startTime", String.valueOf(inputStartTime.getText()));
@@ -286,8 +309,10 @@ public class TabOne1 extends Fragment implements Callback_Adapter_Fragment {
                         //add content
                         objectDetails.put("content", String.valueOf(inputContent.getText()));
                         SuperAppObjectBoundary updateBoundary = new SuperAppObjectBoundary(new ObjectId("hh", "1"), "EVENT", "event", true, new Location(55.0, 60.5), new CreatedBy(currentUser.getUserId()), objectDetails);
-
                         ObjectOperations objectOperations = new ObjectOperations();
+
+                        clearForm();
+
                         objectOperations.editEvent(hourList.get(position).getInternalObjectId(), updateBoundary);
                         exitUserInput.setVisibility(View.INVISIBLE);
                         userInput.setVisibility(View.INVISIBLE);
